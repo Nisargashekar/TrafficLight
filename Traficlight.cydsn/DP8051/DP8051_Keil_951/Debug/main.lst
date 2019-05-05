@@ -1,0 +1,275 @@
+C51 COMPILER V9.51   MAIN                                                                  04/02/2019 13:45:33 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\DP8051\DP8051_Keil_951\Debug\main.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -main.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(DEBUG) WL(2) PR(.\DP8051\DP8051_Ke
+                    -il_951\Debug/main.lst) CD OT(2,SIZE) OJ(.\DP8051\DP8051_Keil_951\Debug\main.obj)
+
+line level    source
+
+   1          /* ========================================
+   2           *
+   3           * Copyright YOUR COMPANY, THE YEAR
+   4           * All Rights Reserved
+   5           * UNPUBLISHED, LICENSED SOFTWARE.
+   6           *
+   7           * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8           * WHICH IS THE PROPERTY OF your company.
+   9           *
+  10           * ========================================
+  11          */
+  12          #include "project.h"
+  13          //#include <math.h>
+  14          //#include<stdio.h>
+  15          
+  16          #define ON  1
+  17          #define OFF 0
+  18          
+  19          #define RED_Duration 8
+  20          #define GREEN_DURATION 4
+  21          #define AMBER_DURATION 2
+  22          
+  23          enum {RED, WAIT_FOR_RED_COMPLETE, AMBER,WAIT_FOR_AMBER_COMPLETE, GREEN, WAIT_FOR_GREEN_COMPLETE };
+  24          uint8 TimeInState;
+  25          uint8 CurrentState;
+  26          
+  27          int main(void)
+  28          {
+  29   1          CyGlobalIntEnable; /* Enable global interrupts. */
+  30   1          CurrentState = RED ;
+  31   1          /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  32   1        LED_UpdateTimer_Start();
+  33   1        LED_UpdateISR_Start();
+  34   1      
+  35   1          for(;;)
+  36   1          {
+  37   2              /* Place your application code here. */
+  38   2              switch(CurrentState){
+  39   3                  case RED:{
+  40   4                      Red_LED_Write(ON);
+  41   4                      Green_LED_Write(OFF);
+  42   4                      
+  43   4                      CurrentState = WAIT_FOR_RED_COMPLETE;
+  44   4                      break;
+  45   4                  }
+  46   3                  case WAIT_FOR_RED_COMPLETE:{
+  47   4                      if(TimeInState == RED_Duration){
+  48   5                          TimeInState =0;
+  49   5                          CurrentState = AMBER;
+  50   5                      }
+  51   4                      break;
+  52   4                  }
+  53   3                  case AMBER:{
+C51 COMPILER V9.51   MAIN                                                                  04/02/2019 13:45:33 PAGE 2   
+
+  54   4                      Red_LED_Write(ON);
+  55   4                      Green_LED_Write(ON);
+  56   4                      CurrentState = WAIT_FOR_AMBER_COMPLETE;
+  57   4                      break;
+  58   4                  }
+  59   3                  case WAIT_FOR_AMBER_COMPLETE:{
+  60   4                      if(TimeInState == AMBER_DURATION){
+  61   5                          TimeInState =0;
+  62   5                          CurrentState = GREEN;
+  63   5                      }
+  64   4                      break;
+  65   4                  }
+  66   3                  case GREEN:{
+  67   4                      Red_LED_Write(OFF);
+  68   4                      Green_LED_Write(ON);
+  69   4                      CurrentState = WAIT_FOR_GREEN_COMPLETE;
+  70   4                      break;
+  71   4                  }
+  72   3                  case WAIT_FOR_GREEN_COMPLETE:{
+  73   4                    if(TimeInState == GREEN_DURATION){
+  74   5                          TimeInState =0;
+  75   5                          CurrentState = RED;
+  76   5                      }
+  77   4                      break;
+  78   4                  }
+  79   3              }
+  80   2          }
+  81   1      }
+  82          
+  83          /* [] END OF FILE */
+C51 COMPILER V9.51   MAIN                                                                  04/02/2019 13:45:33 PAGE 3   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 27
+                                           ; SOURCE LINE # 28
+                                           ; SOURCE LINE # 29
+0000 D2AF              SETB    EA
+0002 9044F4            MOV     DPTR,#044F4H
+0005 74FD              MOV     A,#0FDH
+0007 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 30
+0008 900000      R     MOV     DPTR,#CurrentState
+000B E4                CLR     A
+000C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 32
+000D 120000      E     LCALL   LED_UpdateTimer_Start
+                                           ; SOURCE LINE # 33
+0010 120000      E     LCALL   LED_UpdateISR_Start
+                                           ; SOURCE LINE # 35
+0013         ?C0001:
+                                           ; SOURCE LINE # 36
+                                           ; SOURCE LINE # 38
+0013 900000      R     MOV     DPTR,#CurrentState
+0016 E0                MOVX    A,@DPTR
+0017 FF                MOV     R7,A
+0018 EF                MOV     A,R7
+0019 120000      E     LCALL   ?C?CCASE
+001C 0000        R     DW      ?C0004
+001E 00                DB      00H
+001F 0000        R     DW      ?C0005
+0021 01                DB      01H
+0022 0000        R     DW      ?C0007
+0024 02                DB      02H
+0025 0000        R     DW      ?C0008
+0027 03                DB      03H
+0028 0000        R     DW      ?C0010
+002A 04                DB      04H
+002B 0000        R     DW      ?C0011
+002D 05                DB      05H
+002E 0000              DW      00H
+0030 0000        R     DW      ?C0001
+                                           ; SOURCE LINE # 39
+0032         ?C0004:
+                                           ; SOURCE LINE # 40
+0032 7F01              MOV     R7,#01H
+0034 120000      E     LCALL   _Red_LED_Write
+                                           ; SOURCE LINE # 41
+0037 7F00              MOV     R7,#00H
+0039 120000      E     LCALL   _Green_LED_Write
+                                           ; SOURCE LINE # 43
+003C 900000      R     MOV     DPTR,#CurrentState
+003F 7401              MOV     A,#01H
+0041 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 44
+0042 80CF              SJMP    ?C0001
+                                           ; SOURCE LINE # 45
+                                           ; SOURCE LINE # 46
+0044         ?C0005:
+                                           ; SOURCE LINE # 47
+0044 900000      R     MOV     DPTR,#TimeInState
+0047 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   MAIN                                                                  04/02/2019 13:45:33 PAGE 4   
+
+0048 FF                MOV     R7,A
+0049 EF                MOV     A,R7
+004A B408C6            CJNE    A,#08H,?C0001
+                                           ; SOURCE LINE # 48
+004D 900000      R     MOV     DPTR,#TimeInState
+0050 E4                CLR     A
+0051 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 49
+0052 900000      R     MOV     DPTR,#CurrentState
+0055 7402              MOV     A,#02H
+0057 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 50
+                                           ; SOURCE LINE # 51
+0058 80B9              SJMP    ?C0001
+                                           ; SOURCE LINE # 52
+                                           ; SOURCE LINE # 53
+005A         ?C0007:
+                                           ; SOURCE LINE # 54
+005A 7F01              MOV     R7,#01H
+005C 120000      E     LCALL   _Red_LED_Write
+                                           ; SOURCE LINE # 55
+005F 7F01              MOV     R7,#01H
+0061 120000      E     LCALL   _Green_LED_Write
+                                           ; SOURCE LINE # 56
+0064 900000      R     MOV     DPTR,#CurrentState
+0067 7403              MOV     A,#03H
+0069 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 57
+006A 80A7              SJMP    ?C0001
+                                           ; SOURCE LINE # 58
+                                           ; SOURCE LINE # 59
+006C         ?C0008:
+                                           ; SOURCE LINE # 60
+006C 900000      R     MOV     DPTR,#TimeInState
+006F E0                MOVX    A,@DPTR
+0070 FF                MOV     R7,A
+0071 EF                MOV     A,R7
+0072 B4029E            CJNE    A,#02H,?C0001
+                                           ; SOURCE LINE # 61
+0075 900000      R     MOV     DPTR,#TimeInState
+0078 E4                CLR     A
+0079 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 62
+007A 900000      R     MOV     DPTR,#CurrentState
+007D 7404              MOV     A,#04H
+007F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 63
+                                           ; SOURCE LINE # 64
+0080 8091              SJMP    ?C0001
+                                           ; SOURCE LINE # 65
+                                           ; SOURCE LINE # 66
+0082         ?C0010:
+                                           ; SOURCE LINE # 67
+0082 7F00              MOV     R7,#00H
+0084 120000      E     LCALL   _Red_LED_Write
+                                           ; SOURCE LINE # 68
+0087 7F01              MOV     R7,#01H
+0089 120000      E     LCALL   _Green_LED_Write
+                                           ; SOURCE LINE # 69
+008C 900000      R     MOV     DPTR,#CurrentState
+008F 7405              MOV     A,#05H
+0091 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   MAIN                                                                  04/02/2019 13:45:33 PAGE 5   
+
+                                           ; SOURCE LINE # 70
+0092 020000      R     LJMP    ?C0001
+                                           ; SOURCE LINE # 71
+                                           ; SOURCE LINE # 72
+0095         ?C0011:
+                                           ; SOURCE LINE # 73
+0095 900000      R     MOV     DPTR,#TimeInState
+0098 E0                MOVX    A,@DPTR
+0099 FF                MOV     R7,A
+009A EF                MOV     A,R7
+009B 6404              XRL     A,#04H
+009D 6003              JZ      $ + 5H
+009F 020000      R     LJMP    ?C0001
+                                           ; SOURCE LINE # 74
+00A2 900000      R     MOV     DPTR,#TimeInState
+00A5 E4                CLR     A
+00A6 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 75
+00A7 900000      R     MOV     DPTR,#CurrentState
+00AA E4                CLR     A
+00AB F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 76
+                                           ; SOURCE LINE # 77
+00AC 020000      R     LJMP    ?C0001
+                                           ; SOURCE LINE # 78
+                                           ; SOURCE LINE # 79
+                                           ; SOURCE LINE # 80
+00AF 020000      R     LJMP    ?C0001
+00B2 22                RET     
+             ; FUNCTION main (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    179    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,12 @@
+dont_use_io iocell 1 0
+dont_use_io iocell 1 1
+dont_use_io iocell 1 3
+set_location "\LED_UpdateTimer:TimerUDB:rstSts:stsreg\" statusicell 1 3 4 
+set_location "\LED_UpdateTimer:TimerUDB:status_tc\" macrocell 1 3 0 0
+set_location "\LED_UpdateTimer:TimerUDB:sT8:timerdp:u0\" datapathcell 1 3 2 
+set_location "Net_9" macrocell 1 3 0 1
+set_location "\LED_UpdateTimer:TimerUDB:sCTRLReg:SyncCtl:ctrlreg\" controlcell 1 3 6 
+set_location "ClockBlock" clockblockcell -1 -1 0
+set_location "LED_UpdateISR" interrupt -1 -1 0
+set_io "Red_LED(0)" iocell 3 7
+set_io "Green_LED(0)" iocell 3 6

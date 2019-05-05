@@ -1,0 +1,10 @@
+D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\Traficlight.cydsn\Traficlight.cyprj|aa97b7b2-7cb7-4e24-867f-4ee5d1841ee2
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|f8524428-d476-411b-97be-ed10b97313eb
+C:\Users\SomaShekar\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|6de71200-92b9-4181-980f-e44686fd0bd6
+C:\Users\SomaShekar\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|22e56804-9720-4931-a1fd-b5a2646df397
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|063f45dd-f631-4270-bc6d-2ce804ae0f39
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|a1d9325b-4caf-4dc8-8883-b5be6a4d45b4
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|9b26a3d7-ff81-4a59-99d6-c72b790fff5a
+D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLight1.cydsn\TrafficLight1.cyprj|c38bde7a-16b1-4d06-994d-1860357a0685
+D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\Exercise.cydsn\Exercise.cyprj|649b11e3-3494-41e5-bb18-d6182f2fe76e
+D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\TrafficLightVersion1.2.cyprj|a883394f-ac4b-4353-b464-0bd227894aef
