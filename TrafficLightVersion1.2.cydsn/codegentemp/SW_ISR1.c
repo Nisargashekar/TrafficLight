@@ -27,7 +27,7 @@
 *  Place your includes, defines and code here 
 ********************************************************************************/
 /* `#START SW_ISR1_intc` */
-
+extern uint8 Switch1CaptureFlag;
 /* `#END` */
 
 
@@ -156,7 +156,7 @@ CY_ISR(SW_ISR1_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START SW_ISR1_Interrupt` */
-
+     Switch1CaptureFlag = 1;
     /* `#END` */
 
     /* PSoC3 ES1, ES2 RTC ISR PATCH  */ 

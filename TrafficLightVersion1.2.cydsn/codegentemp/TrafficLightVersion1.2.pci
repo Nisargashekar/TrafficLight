@@ -1,5 +1,5 @@
 # TrafficLightVersion1.2
-# 2019-04-25 12:43:10Z
+# 2019-06-07 09:30:22Z
 
 # IO_0@[IOP=(1)][IoId=(0)] is reserved: SWDDebugEnabled
 dont_use_io iocell 1 0
@@ -27,3 +27,8 @@ set_io "\LCD:LCDPort(4)\" iocell 2 4
 set_io "\LCD:LCDPort(5)\" iocell 2 5
 set_io "\LCD:LCDPort(6)\" iocell 2 6
 set_io "AfterHours(0)" iocell 6 1
+set_io "Setting_mode(0)" iocell 15 5
+set_io "POT(0)" iocell 6 5
+set_io "Rx(0)" iocell 12 3
+set_io "Tx(0)" iocell 12 2
+set_location "\ADC:DSM\" dsmodcell -1 -1 0

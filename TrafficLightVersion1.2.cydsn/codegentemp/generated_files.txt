@@ -66,9 +66,40 @@
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\timer_clock_1.h" value="HEADER;;;;;timer_clock_1" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\SW_ISR1.c" value="SOURCE_C;DP8051;;;;SW_ISR1" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\SW_ISR1.h" value="HEADER;;;;;SW_ISR1" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\Setting_mode.c" value="SOURCE_C;DP8051;;;;Setting_mode" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\Setting_mode.h" value="HEADER;;;;;Setting_mode" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\Setting_mode_aliases.h" value="HEADER;;;;;Setting_mode" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\SW_ISR2.c" value="SOURCE_C;DP8051;;;;SW_ISR2" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\SW_ISR2.h" value="HEADER;;;;;SW_ISR2" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\timer_clock_2.c" value="SOURCE_C;DP8051;;;;timer_clock_2" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\timer_clock_2.h" value="HEADER;;;;;timer_clock_2" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC.c" value="SOURCE_C;DP8051;;;;ADC" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC.h" value="HEADER;;;;;ADC" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_PM.c" value="SOURCE_C;DP8051;;;;ADC" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_INT.c" value="SOURCE_C;DP8051;;;;ADC" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\POT.c" value="SOURCE_C;DP8051;;;;POT" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\POT.h" value="HEADER;;;;;POT" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\POT_aliases.h" value="HEADER;;;;;POT" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART.c" value="SOURCE_C;DP8051;;;;UART" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART.h" value="HEADER;;;;;UART" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART_PM.c" value="SOURCE_C;DP8051;;;;UART" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART_INT.c" value="SOURCE_C;DP8051;;;;UART" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART_BOOT.c" value="SOURCE_C;DP8051;;;;UART" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\EEPROM.c" value="SOURCE_C;DP8051;;;;EEPROM" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\EEPROM.h" value="HEADER;;;;;EEPROM" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\LCD_LCDPort.c" value="SOURCE_C;DP8051;;;;LCD_LCDPort" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\LCD_LCDPort.h" value="HEADER;;;;;LCD_LCDPort" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\LCD_LCDPort_aliases.h" value="HEADER;;;;;LCD_LCDPort" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_AMux.c" value="SOURCE_C;DP8051;;;;ADC_AMux" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_AMux.h" value="HEADER;;;;;ADC_AMux" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_Ext_CP_Clk.c" value="SOURCE_C;DP8051;;;;ADC_Ext_CP_Clk" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_Ext_CP_Clk.h" value="HEADER;;;;;ADC_Ext_CP_Clk" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_IRQ.c" value="SOURCE_C;DP8051;;;;ADC_IRQ" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_IRQ.h" value="HEADER;;;;;ADC_IRQ" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_theACLK.c" value="SOURCE_C;DP8051;;;;ADC_theACLK" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\ADC_theACLK.h" value="HEADER;;;;;ADC_theACLK" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART_IntClock.c" value="SOURCE_C;DP8051;;;;UART_IntClock" />
+  <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\UART_IntClock.h" value="HEADER;;;;;UART_IntClock" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\cy_em_eeprom.c" value="SOURCE_C;DP8051;;;;Em_EEPROM_Dynamic" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\cy_em_eeprom.h" value="HEADER;;;;;Em_EEPROM_Dynamic" />
   <file name="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\codegentemp\CyBootAsmKeil.a51" value="SOURCE_ASM;DP8051;;c659702b-5f69-4783-8160-eb7977f1c97a;;cy_boot" />

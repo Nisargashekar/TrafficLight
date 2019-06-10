@@ -11,7 +11,12 @@
 <CyGuid_f44455c5-3770-4452-b988-0a7a7ff46256 type_name="CyDesigner.Common.ProjMgmt.Model.CyConfigDependencies" version="1">
 <dependency_info name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Debug@DP8051" xml_contents_version="2">
 <CyGuid_1173175f-1b9b-4ad4-a065-754a48a27021 type_name="CyDesigner.Common.Base.CyFileDeps" version="1">
-<file name=".\DP8051\DP8051_Keil_951\Debug\main.obj">
+<file name=".\DP8051\DP8051_Keil_951\Debug\SerialCommunication.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
 <dep name=".\Generated_Source\PSoC3\AfterHours.h" />
 <dep name=".\Generated_Source\PSoC3\AfterHours_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\Amber_LED.h" />
@@ -20,6 +25,7 @@
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
 <dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\EEPROM.h" />
 <dep name=".\Generated_Source\PSoC3\Front_Amber_LED.h" />
 <dep name=".\Generated_Source\PSoC3\Front_Amber_LED_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\Front_Green_LED.h" />
@@ -39,6 +45,8 @@
 <dep name=".\Generated_Source\PSoC3\Left_Green_LED_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\Left_Red_LED.h" />
 <dep name=".\Generated_Source\PSoC3\Left_Red_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\POT.h" />
+<dep name=".\Generated_Source\PSoC3\POT_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
 <dep name=".\Generated_Source\PSoC3\Red_LED.h" />
 <dep name=".\Generated_Source\PSoC3\Red_LED_aliases.h" />
@@ -49,6 +57,11 @@
 <dep name=".\Generated_Source\PSoC3\Right_Red_LED.h" />
 <dep name=".\Generated_Source\PSoC3\Right_Red_LED_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\SW_ISR1.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR2.h" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode.h" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_IntClock.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cy_em_eeprom.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
@@ -61,8 +74,15 @@
 <dep name=".\Generated_Source\PSoC3\project.h" />
 <dep name=".\Generated_Source\PSoC3\timer_clock.h" />
 <dep name=".\Generated_Source\PSoC3\timer_clock_1.h" />
-<dep name=".\main.c" />
+<dep name=".\Generated_Source\PSoC3\timer_clock_2.h" />
+<dep name=".\SerialCommunication.c" />
+<dep name=".\SerialCommunication.h" />
 </file>
+<file name=".\Generated_Source\PSoC3\ADC.h" />
+<file name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<file name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<file name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<file name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
 <file name=".\Generated_Source\PSoC3\AfterHours.h" />
 <file name=".\Generated_Source\PSoC3\AfterHours_aliases.h" />
 <file name=".\Generated_Source\PSoC3\Amber_LED.h" />
@@ -71,6 +91,7 @@
 <file name=".\Generated_Source\PSoC3\CyFlash.h" />
 <file name=".\Generated_Source\PSoC3\CyLib.h" />
 <file name=".\Generated_Source\PSoC3\CySpc.h" />
+<file name=".\Generated_Source\PSoC3\EEPROM.h" />
 <file name=".\Generated_Source\PSoC3\Front_Amber_LED.h" />
 <file name=".\Generated_Source\PSoC3\Front_Amber_LED_aliases.h" />
 <file name=".\Generated_Source\PSoC3\Front_Green_LED.h" />
@@ -90,6 +111,8 @@
 <file name=".\Generated_Source\PSoC3\Left_Green_LED_aliases.h" />
 <file name=".\Generated_Source\PSoC3\Left_Red_LED.h" />
 <file name=".\Generated_Source\PSoC3\Left_Red_LED_aliases.h" />
+<file name=".\Generated_Source\PSoC3\POT.h" />
+<file name=".\Generated_Source\PSoC3\POT_aliases.h" />
 <file name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
 <file name=".\Generated_Source\PSoC3\Red_LED.h" />
 <file name=".\Generated_Source\PSoC3\Red_LED_aliases.h" />
@@ -100,6 +123,11 @@
 <file name=".\Generated_Source\PSoC3\Right_Red_LED.h" />
 <file name=".\Generated_Source\PSoC3\Right_Red_LED_aliases.h" />
 <file name=".\Generated_Source\PSoC3\SW_ISR1.h" />
+<file name=".\Generated_Source\PSoC3\SW_ISR2.h" />
+<file name=".\Generated_Source\PSoC3\Setting_mode.h" />
+<file name=".\Generated_Source\PSoC3\Setting_mode_aliases.h" />
+<file name=".\Generated_Source\PSoC3\UART.h" />
+<file name=".\Generated_Source\PSoC3\UART_IntClock.h" />
 <file name=".\Generated_Source\PSoC3\cyPm.h" />
 <file name=".\Generated_Source\PSoC3\cy_em_eeprom.h" />
 <file name=".\Generated_Source\PSoC3\cydevice.h" />
@@ -112,30 +140,112 @@
 <file name=".\Generated_Source\PSoC3\project.h" />
 <file name=".\Generated_Source\PSoC3\timer_clock.h" />
 <file name=".\Generated_Source\PSoC3\timer_clock_1.h" />
-<file name=".\main.c" />
-<file name=".\DP8051\DP8051_Keil_951\Debug\LED_UpdateISR.obj">
+<file name=".\Generated_Source\PSoC3\timer_clock_2.h" />
+<file name=".\SerialCommunication.c" />
+<file name=".\SerialCommunication.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\main.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\AfterHours.h" />
+<dep name=".\Generated_Source\PSoC3\AfterHours_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Amber_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Amber_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\CyDmac.h" />
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
 <dep name=".\Generated_Source\PSoC3\CySpc.h" />
-<dep name=".\Generated_Source\PSoC3\LED_UpdateISR.c" />
+<dep name=".\Generated_Source\PSoC3\EEPROM.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Amber_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Amber_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Green_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Green_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Red_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Front_Red_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Green_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Green_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\LCD.h" />
+<dep name=".\Generated_Source\PSoC3\LCD_LCDPort.h" />
+<dep name=".\Generated_Source\PSoC3\LCD_LCDPort_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\LED_UpdateISR.h" />
+<dep name=".\Generated_Source\PSoC3\LED_UpdateTimer.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Amber_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Amber_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Green_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Green_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Red_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Left_Red_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\POT.h" />
+<dep name=".\Generated_Source\PSoC3\POT_aliases.h" />
 <dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\Red_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Red_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Amber_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Amber_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Green_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Green_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Red_LED.h" />
+<dep name=".\Generated_Source\PSoC3\Right_Red_LED_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR1.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR2.h" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode.h" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_IntClock.h" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cy_em_eeprom.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cydisabledsheets.h" />
 <dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
-<dep name=".\cyapicallbacks.h" />
+<dep name=".\Generated_Source\PSoC3\project.h" />
+<dep name=".\Generated_Source\PSoC3\timer_clock.h" />
+<dep name=".\Generated_Source\PSoC3\timer_clock_1.h" />
+<dep name=".\Generated_Source\PSoC3\timer_clock_2.h" />
+<dep name=".\main.c" />
 </file>
-<file name=".\Generated_Source\PSoC3\LED_UpdateISR.c" />
-<file name=".\cyapicallbacks.h" />
-<file name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR1.obj">
+<file name=".\main.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\UART.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
 <dep name=".\Generated_Source\PSoC3\CySpc.h" />
 <dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
-<dep name=".\Generated_Source\PSoC3\SW_ISR1.c" />
-<dep name=".\Generated_Source\PSoC3\SW_ISR1.h" />
+<dep name=".\Generated_Source\PSoC3\UART.c" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_IntClock.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\UART.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\UART_BOOT.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_BOOT.c" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\UART_BOOT.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\UART_INT.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_INT.c" />
 <dep name=".\Generated_Source\PSoC3\cyPm.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice.h" />
 <dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
@@ -143,7 +253,112 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 <dep name=".\cyapicallbacks.h" />
 </file>
-<file name=".\Generated_Source\PSoC3\SW_ISR1.c" />
+<file name=".\Generated_Source\PSoC3\UART_INT.c" />
+<file name=".\cyapicallbacks.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\UART_PM.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\UART.h" />
+<dep name=".\Generated_Source\PSoC3\UART_PM.c" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\UART_PM.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.c" />
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_AMux.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_AMux.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter_cfg.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_AMux.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_Ext_CP_Clk.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_Ext_CP_Clk.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_INT.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_INT.c" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_INT.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_IRQ.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_IRQ.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_IRQ.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_IRQ.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_PM.obj">
+<dep name=".\Generated_Source\PSoC3\ADC.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_PM.c" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_PM.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_theACLK.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_theACLK.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\AfterHours.obj">
 <dep name=".\Generated_Source\PSoC3\AfterHours.c" />
 <dep name=".\Generated_Source\PSoC3\AfterHours.h" />
@@ -219,6 +434,20 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\CySpc.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\EEPROM.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\EEPROM.c" />
+<dep name=".\Generated_Source\PSoC3\EEPROM.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\EEPROM.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\Front_Amber_LED.obj">
 <dep name=".\Generated_Source\PSoC3\Front_Amber_LED.c" />
 <dep name=".\Generated_Source\PSoC3\Front_Amber_LED.h" />
@@ -297,6 +526,21 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\LCD_PM.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\LED_UpdateISR.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\LED_UpdateISR.c" />
+<dep name=".\Generated_Source\PSoC3\LED_UpdateISR.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\LED_UpdateISR.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\LED_UpdateTimer.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -358,6 +602,17 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Left_Red_LED.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\POT.obj">
+<dep name=".\Generated_Source\PSoC3\POT.c" />
+<dep name=".\Generated_Source\PSoC3\POT.h" />
+<dep name=".\Generated_Source\PSoC3\POT_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\POT.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\Red_LED.obj">
 <dep name=".\Generated_Source\PSoC3\Red_LED.c" />
 <dep name=".\Generated_Source\PSoC3\Red_LED.h" />
@@ -402,6 +657,56 @@
 <dep name=".\Generated_Source\PSoC3\cytypes.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\Right_Red_LED.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR1.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR1.c" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR1.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\SW_ISR1.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR2.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR2.c" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR2.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\SW_ISR2.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\Setting_mode.obj">
+<dep name=".\Generated_Source\PSoC3\Setting_mode.c" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode.h" />
+<dep name=".\Generated_Source\PSoC3\Setting_mode_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\Setting_mode.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\UART_IntClock.obj">
+<dep name=".\Generated_Source\PSoC3\UART_IntClock.c" />
+<dep name=".\Generated_Source\PSoC3\UART_IntClock.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\UART_IntClock.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\cyPm.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -471,6 +776,15 @@
 <dep name=".\Generated_Source\PSoC3\timer_clock_1.h" />
 </file>
 <file name=".\Generated_Source\PSoC3\timer_clock_1.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\timer_clock_2.obj">
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\Generated_Source\PSoC3\timer_clock_2.c" />
+<dep name=".\Generated_Source\PSoC3\timer_clock_2.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\timer_clock_2.c" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\CyBootAsmKeil.obj">
 <dep name=".\Generated_Source\PSoC3\CyBootAsmKeil.a51" />
 <dep name=".\Generated_Source\PSoC3\PSoC3_8051.inc" />
@@ -491,6 +805,136 @@
 <dep name=".\Generated_Source\PSoC3\cyfitterkeil.inc" />
 </file>
 <file name=".\Generated_Source\PSoC3\KeilStart.a51" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\cymem.obj">
+<dep name=".\Generated_Source\PSoC3\cymem.a51" />
+</file>
+<file name=".\Generated_Source\PSoC3\cymem.a51" />
+<file name=".\Packet.h" />
+<file name=".\UART.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\AfterHours_1.obj">
+<dep name=".\Generated_Source\PSoC3\AfterHours_1.c" />
+<dep name=".\Generated_Source\PSoC3\AfterHours_1.h" />
+<dep name=".\Generated_Source\PSoC3\AfterHours_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\AfterHours_1.c" />
+<file name=".\Generated_Source\PSoC3\AfterHours_1.h" />
+<file name=".\Generated_Source\PSoC3\AfterHours_1_aliases.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1.c" />
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1.h" />
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.h" />
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_theACLK.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1_Ext_CP_Clk.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1_INT.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_INT.c" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_INT.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1_IRQ.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_IRQ.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_IRQ.h" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_IRQ.c" />
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_IRQ.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1_PM.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1.h" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_PM.c" />
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_PM.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\ADC_DelSig_1_theACLK.obj">
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_theACLK.c" />
+<dep name=".\Generated_Source\PSoC3\ADC_DelSig_1_theACLK.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\ADC_DelSig_1_theACLK.c" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\Pin_1.obj">
+<dep name=".\Generated_Source\PSoC3\Pin_1.c" />
+<dep name=".\Generated_Source\PSoC3\Pin_1.h" />
+<dep name=".\Generated_Source\PSoC3\Pin_1_aliases.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cypins.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\Pin_1.c" />
+<file name=".\Generated_Source\PSoC3\Pin_1.h" />
+<file name=".\Generated_Source\PSoC3\Pin_1_aliases.h" />
+<file name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR1_1.obj">
+<dep name=".\Generated_Source\PSoC3\CyFlash.h" />
+<dep name=".\Generated_Source\PSoC3\CyLib.h" />
+<dep name=".\Generated_Source\PSoC3\CySpc.h" />
+<dep name=".\Generated_Source\PSoC3\PSoC3_8051.h" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR1_1.c" />
+<dep name=".\Generated_Source\PSoC3\SW_ISR1_1.h" />
+<dep name=".\Generated_Source\PSoC3\cyPm.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice.h" />
+<dep name=".\Generated_Source\PSoC3\cydevice_trm.h" />
+<dep name=".\Generated_Source\PSoC3\cyfitter.h" />
+<dep name=".\Generated_Source\PSoC3\cytypes.h" />
+<dep name=".\cyapicallbacks.h" />
+</file>
+<file name=".\Generated_Source\PSoC3\SW_ISR1_1.c" />
+<file name=".\Generated_Source\PSoC3\SW_ISR1_1.h" />
 <file name=".\DP8051\DP8051_Keil_951\Debug\ResetCapture.obj">
 <dep name=".\Generated_Source\PSoC3\CyFlash.h" />
 <dep name=".\Generated_Source\PSoC3\CyLib.h" />
@@ -507,10 +951,6 @@
 </file>
 <file name=".\Generated_Source\PSoC3\ResetCapture.c" />
 <file name=".\Generated_Source\PSoC3\ResetCapture.h" />
-<file name=".\DP8051\DP8051_Keil_951\Debug\cymem.obj">
-<dep name=".\Generated_Source\PSoC3\cymem.a51" />
-</file>
-<file name=".\Generated_Source\PSoC3\cymem.a51" />
 </CyGuid_1173175f-1b9b-4ad4-a065-754a48a27021>
 </dependency_info>
 </CyGuid_f44455c5-3770-4452-b988-0a7a7ff46256>
@@ -521,6 +961,7 @@
 <CyGuid_1173175f-1b9b-4ad4-a065-754a48a27021 type_name="CyDesigner.Common.Base.CyFileDeps" version="1">
 <file name=".\DP8051\DP8051_Keil_951\Debug\TrafficLightVersion1.2.hex">
 <dep name=".\DP8051\DP8051_Keil_951\Debug\main.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\SerialCommunication.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\cyfitter_cfg.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\timer_clock.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\LED_UpdateTimer.obj" />
@@ -554,6 +995,23 @@
 <dep name=".\DP8051\DP8051_Keil_951\Debug\AfterHours.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\timer_clock_1.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR1.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\timer_clock_2.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\SW_ISR2.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_PM.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_INT.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\POT.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_AMux.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_Ext_CP_Clk.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_IRQ.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\ADC_theACLK.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\Setting_mode.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\UART.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\UART_PM.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\UART_INT.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\UART_BOOT.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\UART_IntClock.obj" />
+<dep name=".\DP8051\DP8051_Keil_951\Debug\EEPROM.obj" />
 <dep name=".\DP8051\DP8051_Keil_951\Debug\TrafficLightVersion1.2.lib" />
 <dep name="${CyRoot}\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\DP8051\DP8051_Keil_951\Debug\CyComponentLibrary.lib" />
 </file>
@@ -603,6 +1061,34 @@
 <name_val_pair name="Generated_Source\PSoC3\ResetCapture.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
 <name_val_pair name="Generated_Source\PSoC3\timer_clock_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
 <name_val_pair name="Generated_Source\PSoC3\SW_ISR1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\AfterHours_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\SW_ISR1_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\timer_clock_2.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1_PM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1_INT.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\Pin_1.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1_IRQ.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_DelSig_1_theACLK.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\SW_ISR2.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_PM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_INT.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\POT.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_AMux.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_Ext_CP_Clk.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_IRQ.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\ADC_theACLK.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\Setting_mode.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\UART.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\UART_PM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\UART_INT.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\UART_BOOT.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\UART_IntClock.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="Generated_Source\PSoC3\EEPROM.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="UART.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
+<name_val_pair name="SerialCommunication.c" v="NOIV LARGE MODDP2 OMF2 VB(1) NOIP &quot;INCDIR(., Generated_Source\PSoC3)&quot; FF(3) DB DF(DEBUG) WL(2) PR(${OutputDir}/${CompileFile}.lst) CD OT(2 ,Size)" />
 </name>
 </genericCmdLineData>
 <codeGenCmdLineTag v="-.appdatapath &quot;C:\Users\SomaShekar\AppData\Local\Cypress Semiconductor\PSoC Creator\4.2&quot; -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p &quot;D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\TrafficLightVersion1.2.cyprj&quot; -d CY8C3866AXI-040 -s &quot;D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3&quot; -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=BE" />
@@ -741,6 +1227,108 @@
 <v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\Debouncer_v1_0\Custom\Resources.Designer.cs</v>
 <v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\Debouncer_v1_0\Custom\Tabs\cygeneraltab.resx</v>
 <v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\Debouncer_v1_0\Custom\Resources.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\ADC_DelSig_v3_30.cydmacap</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\ADC_DelSig_v3_30.cysym</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\ADC_DelSig_v3_30.pdf</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\ADC_DelSig_v3_30.cystate</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\ADC_DelSig_v3_30.cycdx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\API\ADC_DelSig.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\API\ADC_DelSig.h</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\API\ADC_DelSig_PM.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\API\ADC_DelSigINT.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyapigen.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cycommontab.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cycommontab.designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyparameters.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cycustomizer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\Resource.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyconfigurationtab.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyconfigurationtab.designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cytabcontrolwrapper.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cytabcontrolwrapper.designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyapiconst.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cycommontab.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\Resource.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\Custom\cyconfigurationtab.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\ADC_DelSig_v3_30\PSoC3\ADC_DelSig_v3_30.cysch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\cy_vref_v1_70.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\cy_vref_v1_70.v</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\cy_vref_v1_70.cystate</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\cy_vref_v1_70.cyprimitive</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\cy_vref_v1_70.pdf</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\custom.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\cyvrefidcontrol.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\cyvrefidcontrol.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\Resources.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\cyvrefidcontrol.resx</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_vref_v1_70\Custom\Resources.resx</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\cy_analog_virtualmux_v1_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\cy_analog_virtualmux_v1_0.pdf</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\cy_analog_virtualmux_v1_0.v</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_virtualmux_v1_0\Custom\cy_analog_virtualmux_v1_0.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_noconnect_v1_0\cy_analog_noconnect_v1_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_noconnect_v1_0\cy_analog_noconnect_v1_0.pdf</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_noconnect_v1_0\cy_analog_noconnect_v1_0.primitive</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_noconnect_v1_0\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_analog_noconnect_v1_0\Custom\custom.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\AMux_v1_80.cysym</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\AMux_v1_80.pdf</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\AMux_v1_80.v</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\AMux_v1_80.cystate</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\API\AMux.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\API\AMux.h</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\Custom\cyamuxcustomizer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\AMux_v1_80\Custom\cyverilogbuilder.cs</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_ds_mod_v4_0\cy_psoc3_ds_mod_v4_0.cyprimitive</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_ds_mod_v4_0\cy_psoc3_ds_mod_v4_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_decimator_v1_0\cy_psoc3_decimator_v1_0.cyprimitive</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_psoc3_decimator_v1_0\cy_psoc3_decimator_v1_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\or_v1_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\or_v1_0.pdf</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\or_v1_0.v</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\or_v1_0\Custom\custom.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cysch</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cysym</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.pdf</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cystate</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\UART_v2_50.cycdx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\API\UART.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\API\UART.h</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\API\UART_PM.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\API\UARTINT.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\API\UART_BOOT.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartadvancedcontrol.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartadvancedcontrol.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartcontrol.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartcontrol.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartcustomizer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartparameters.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\Resources.Designer.cs</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartadvancedcontrol.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\cyuartcontrol.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\UART_v2_50\Custom\Resources.resx</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.cysym</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\B_UART_v2_50\B_UART_v2_50.v</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\EEPROM_v3_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\EEPROM_v3_0.pdf</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\EEPROM_v3_0.cystate</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\API\eeprom.c</v>
+<v>${CyRoot}\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\EEPROM_v3_0\API\eeprom.h</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\cy_constant_v1_0.cysym</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\cy_constant_v1_0.v</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\cy_constant_v1_0.cystate</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\cy_constant_v1_0.pdf</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\version.cypatch</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0</v>
+<v>${CyRoot}\psoc\content\CyPrimitives\cyprimitives.cylib\cy_constant_v1_0\Custom\custom.cs</v>
 <v>.\TrafficLightVersion1.2.cydwr</v>
 <v>C:\Users\SomaShekar\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Em_EEPROM_Dynamic_v2_20\API\cy_em_eeprom.c</v>
 <v>C:\Users\SomaShekar\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Em_EEPROM_Dynamic_v2_20\API\cy_em_eeprom.h</v>
@@ -858,6 +1446,55 @@
 <v>Generated_Source\PSoC3\timer_clock_1.h</v>
 <v>Generated_Source\PSoC3\SW_ISR1.c</v>
 <v>Generated_Source\PSoC3\SW_ISR1.h</v>
+<v>Generated_Source\PSoC3\AfterHours_1.c</v>
+<v>Generated_Source\PSoC3\AfterHours_1.h</v>
+<v>Generated_Source\PSoC3\AfterHours_1_aliases.h</v>
+<v>Generated_Source\PSoC3\SW_ISR1_1.c</v>
+<v>Generated_Source\PSoC3\SW_ISR1_1.h</v>
+<v>Generated_Source\PSoC3\timer_clock_2.c</v>
+<v>Generated_Source\PSoC3\timer_clock_2.h</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1.c</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1.h</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_PM.c</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_INT.c</v>
+<v>Generated_Source\PSoC3\Pin_1.c</v>
+<v>Generated_Source\PSoC3\Pin_1.h</v>
+<v>Generated_Source\PSoC3\Pin_1_aliases.h</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.c</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_Ext_CP_Clk.h</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_IRQ.c</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_IRQ.h</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_theACLK.c</v>
+<v>Generated_Source\PSoC3\ADC_DelSig_1_theACLK.h</v>
+<v>Generated_Source\PSoC3\SW_ISR2.c</v>
+<v>Generated_Source\PSoC3\SW_ISR2.h</v>
+<v>Generated_Source\PSoC3\ADC.c</v>
+<v>Generated_Source\PSoC3\ADC.h</v>
+<v>Generated_Source\PSoC3\ADC_PM.c</v>
+<v>Generated_Source\PSoC3\ADC_INT.c</v>
+<v>Generated_Source\PSoC3\POT.c</v>
+<v>Generated_Source\PSoC3\POT.h</v>
+<v>Generated_Source\PSoC3\POT_aliases.h</v>
+<v>Generated_Source\PSoC3\ADC_AMux.c</v>
+<v>Generated_Source\PSoC3\ADC_AMux.h</v>
+<v>Generated_Source\PSoC3\ADC_Ext_CP_Clk.c</v>
+<v>Generated_Source\PSoC3\ADC_Ext_CP_Clk.h</v>
+<v>Generated_Source\PSoC3\ADC_IRQ.c</v>
+<v>Generated_Source\PSoC3\ADC_IRQ.h</v>
+<v>Generated_Source\PSoC3\ADC_theACLK.c</v>
+<v>Generated_Source\PSoC3\ADC_theACLK.h</v>
+<v>Generated_Source\PSoC3\Setting_mode.c</v>
+<v>Generated_Source\PSoC3\Setting_mode.h</v>
+<v>Generated_Source\PSoC3\Setting_mode_aliases.h</v>
+<v>Generated_Source\PSoC3\UART.c</v>
+<v>Generated_Source\PSoC3\UART.h</v>
+<v>Generated_Source\PSoC3\UART_PM.c</v>
+<v>Generated_Source\PSoC3\UART_INT.c</v>
+<v>Generated_Source\PSoC3\UART_BOOT.c</v>
+<v>Generated_Source\PSoC3\UART_IntClock.c</v>
+<v>Generated_Source\PSoC3\UART_IntClock.h</v>
+<v>Generated_Source\PSoC3\EEPROM.c</v>
+<v>Generated_Source\PSoC3\EEPROM.h</v>
 </gen_list>
 <warp_dep>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\ieee\work\stdlogic.vif</v>
@@ -867,7 +1504,7 @@
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\stdlogic\rtlpkg.vif</v>
 <v>C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\stdlogic\cy_psoc3.vif</v>
 </warp_dep>
-<deps_time v="132006697954110629" />
+<deps_time v="132043734301994099" />
 <top_block v="TopDesign" />
 <last_generation v="0" />
 <pdl_path v="" />
@@ -877,7 +1514,7 @@
 <dataGuid v="769d31ea-68b1-4f0c-b90a-7c10a43ee563">
 <CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563 type_name="CyDesigner.Common.ProjMgmt.Model.CyLinkCustomData" version="1">
 <link_deps_times>
-<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Debug@DP8051" v="132006723702127735" />
+<name_val_pair name="4bd5669a-0e4e-4e1c-9625-e982dd945372@Debug@DP8051" v="132046429852342541" />
 </link_deps_times>
 </CyGuid_769d31ea-68b1-4f0c-b90a-7c10a43ee563>
 </dataGuid>
@@ -931,7 +1568,9 @@
 </dataGuid>
 <dataGuid v="504337dd-7d07-4bc7-9057-90e60cf6c469">
 <CyGuid_504337dd-7d07-4bc7-9057-90e60cf6c469 type_name="CyDesigner.Common.Debugger.CyBreakpointList" version="1">
-<debugger_breakpoint_list />
+<debugger_breakpoint_list>
+<CyGuid_76464711-0ae1-4583-b869-f07a0403fc6e type_name="CyDesigner.Common.Debugger.CyFileLineBreakpoint" version="1" hitcount="0" condition="" enabled="True" hardware="True" temparary="False" filename=".\SerialCommunication.c" linenumber="253" />
+</debugger_breakpoint_list>
 </CyGuid_504337dd-7d07-4bc7-9057-90e60cf6c469>
 </dataGuid>
 </userData>

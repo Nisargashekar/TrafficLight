@@ -1,0 +1,3639 @@
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 1   
+
+
+C51 COMPILER V9.51, COMPILATION OF MODULE SERIALCOMMUNICATION
+OBJECT MODULE PLACED IN .\DP8051\DP8051_Keil_951\Debug\SerialCommunication.obj
+COMPILER INVOKED BY: C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\import\keil\pk51\9.51\C51\BIN\c51.exe 
+                    -SerialCommunication.c NOIV LARGE MODDP2 OMF2 VB(1) NOIP INCDIR(.,Generated_Source\PSoC3) FF(3) DB DF(DEBUG) WL(2) PR(.\D
+                    -P8051\DP8051_Keil_951\Debug/SerialCommunication.lst) CD OT(2,SIZE) OJ(.\DP8051\DP8051_Keil_951\Debug\SerialCommunication
+                    -.obj)
+
+line level    source
+
+   1          /* ========================================
+   2           *
+   3           * Copyright YOUR COMPANY, THE YEAR
+   4           * All Rights Reserved
+   5           * UNPUBLISHED, LICENSED SOFTWARE.
+   6           *
+   7           * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8           * WHICH IS THE PROPERTY OF your company.
+   9           *
+  10           * ========================================
+  11          */
+  12          #include <project.h>
+  13          #include <SerialCommunication.h>
+  14          #include <STDIO.H>
+  15          
+  16          
+  17          
+  18          char acuartrxbuffer[UART_RxBuffersize];
+  19          uint8 auiuartrxarray[UART_Arraysize];
+  20          uint8 auimodbusrxarry[Modbus_Command_Size];
+  21          char acuarttxbuffer[UART_TxBuffersize];
+  22          uint8 auiresponseerror[ErrorRespArraySize];
+  23          uint8 auiresposearray[Responsesize];
+  24          uint8 Startindex = 0;
+  25          uint8 Bytecount = 0;
+  26          uint16 Singlewritevalue = 0;
+  27          uint16 Multiplewritevalue = 0;
+  28          uint8 uint8to16conversionflag = 0;
+  29          uint8 LoopCounterSerial;
+  30          uint16 Buffersize = 0;
+  31          uint8 Errorflag = 0;
+  32          
+  33          extern uint16 auigreenduration[];
+  34          extern uint8 EEPROMWriteFlag;
+  35          extern volatile uint8 UART_rxBuffer[UART_RX_BUFFER_SIZE];
+  36          
+  37          /*******************************************************************************
+  38          * Function Name: UART_Start_Operation
+  39          ********************************************************************************
+  40          *
+  41          * Summary:
+  42          *  
+  43          * This function starts UART and enables rx and tx     
+  44          *  
+  45          *
+  46          * Parameters:
+  47          *  None
+  48          *
+  49          * Return:
+  50          *  None
+  51          *
+  52          *******************************************************************************/
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 2   
+
+  53          void UART_Start_Operation(){
+  54   1          
+  55   1          UART_Start();
+  56   1          UART_EnableRxInt();
+  57   1          UART_EnableTxInt();
+  58   1          UART_ClearRxBuffer();
+  59   1          UART_ClearTxBuffer();
+  60   1      }
+  61          
+  62          /*******************************************************************************
+  63          * Function Name: UART_Read
+  64          ********************************************************************************
+  65          *
+  66          * Summary:
+  67          *  
+  68          * This function copies the UART data to array  acuartrxbuffer    
+  69          *  
+  70          *
+  71          * Parameters:
+  72          *  None
+  73          *
+  74          * Return:
+  75          *  None
+  76          *
+  77          *******************************************************************************/
+  78          void UART_Read(){
+  79   1          
+  80   1          Check_For_Proper_Response();
+  81   1          
+  82   1          Buffersize = UART_GetRxBufferSize();
+  83   1          
+  84   1          if(Buffersize > (UART_Stringsize - 1)){
+  85   2              if(UART_rxBuffer[UART_Stringsize-1] != '#'){
+  86   3                  UART_ClearRxBuffer();
+  87   3              }else{
+  88   3                  memset(acuartrxbuffer , 0 , UART_Stringsize);
+  89   3                  memcpy(acuartrxbuffer , (char *)UART_rxBuffer ,UART_Stringsize);
+  90   3                  UART_ClearRxBuffer();
+  91   3                  UART_RxChar_to_ByteConversion();
+  92   3              }
+  93   2          }
+  94   1          
+  95   1      }
+  96          
+  97          /*******************************************************************************
+  98          * Function Name: UART_RxChar_to_ByteConversion
+  99          ********************************************************************************
+ 100          *
+ 101          * Summary:
+ 102          *  
+ 103          * This function converts the rx char string to byte data and stores in auiuaertrx array
+ 104          *  
+ 105          *
+ 106          * Parameters:
+ 107          *  None
+ 108          *
+ 109          * Return:
+ 110          *  None
+ 111          *
+ 112          *******************************************************************************/
+ 113          void UART_RxChar_to_ByteConversion(void){
+ 114   1          
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 3   
+
+ 115   1          char ASCIIHex[2] = "00";
+ 116   1          uint8 Stringcounter = 1;
+ 117   1          uint8 Arraycounter = 0;
+ 118   1          uint8 Conversion = 0;
+ 119   1          
+ 120   1          if((acuartrxbuffer[UART_Startindex] == '$') & (acuartrxbuffer[UART_Endindex] == '#')){
+ 121   2              
+ 122   2              for(Stringcounter = 1; Stringcounter <UART_Endindex;){
+ 123   3                  if(acuartrxbuffer[Stringcounter] == ','){
+ 124   4                      
+ 125   4                      Stringcounter++;
+ 126   4                  }else{
+ 127   4                      
+ 128   4                      ASCIIHex[0] = acuartrxbuffer[Stringcounter++];
+ 129   4                      ASCIIHex[1] = acuartrxbuffer[Stringcounter++];
+ 130   4                      Conversion = ASCII_to_HexConversion(ASCIIHex);
+ 131   4                      auiuartrxarray[Arraycounter++] = Conversion;
+ 132   4                  }
+ 133   3                  
+ 134   3              }
+ 135   2              
+ 136   2              Modbuslike_Process();
+ 137   2          }else{
+ 138   2              
+ 139   2              UART_ClearRxBuffer();
+ 140   2          }
+ 141   1          
+ 142   1          
+ 143   1          
+ 144   1      }
+ 145          
+ 146          /*******************************************************************************
+ 147          * Function Name: ASCII_to_HexConversion
+ 148          ********************************************************************************
+ 149          *
+ 150          * Summary:
+ 151          *  
+ 152          * This function converts ACSII to Hex value  
+ 153          *  
+ 154          *
+ 155          * Parameters:
+ 156          *  None
+ 157          *
+ 158          * Return:
+ 159          *  None
+ 160          *
+ 161          *******************************************************************************/
+ 162          uint8 ASCII_to_HexConversion(char ASCIIHex[]){
+ 163   1          
+ 164   1          char cCharlowernibble;
+ 165   1          char cCharhighernibble;
+ 166   1          uint8 Hexbyte;
+ 167   1          
+ 168   1          cCharhighernibble = ASCIIHex[0];
+ 169   1          cCharlowernibble =  ASCIIHex[1];
+ 170   1          
+ 171   1          if(cCharhighernibble > '9'){
+ 172   2              
+ 173   2              cCharhighernibble = cCharhighernibble - 7;
+ 174   2          }
+ 175   1          
+ 176   1          cCharhighernibble =cCharhighernibble - '0';
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 4   
+
+ 177   1          
+ 178   1          Hexbyte = cCharhighernibble;
+ 179   1          Hexbyte = Hexbyte << 4;
+ 180   1          
+ 181   1          if(cCharlowernibble > '9'){
+ 182   2              
+ 183   2              cCharlowernibble = cCharlowernibble - 7;   
+ 184   2          }
+ 185   1          
+ 186   1          cCharlowernibble = cCharlowernibble - '0';
+ 187   1          
+ 188   1          Hexbyte = Hexbyte | cCharlowernibble;
+ 189   1          
+ 190   1          return Hexbyte;
+ 191   1          
+ 192   1      }
+ 193          
+ 194          /*******************************************************************************
+ 195          * Function Name: Modbuslike_Process
+ 196          ********************************************************************************
+ 197          *
+ 198          * Summary:
+ 199          *  
+ 200          * This function processing the modbus data  
+ 201          *  
+ 202          *
+ 203          * Parameters:
+ 204          *  None
+ 205          *
+ 206          * Return:
+ 207          *  None
+ 208          *
+ 209          *******************************************************************************/
+ 210          
+ 211          void Modbuslike_Process(void){
+ 212   1          
+ 213   1          uint8  ByteSent = 0;  
+ 214   1          uint16 CRCResult = 0;
+ 215   1          uint16 Twobyte1 = 0;
+ 216   1          uint16 Twobyte2 = 0;
+ 217   1         
+ 218   1          if(auiuartrxarray[13] != DeviceID){
+ 219   2              
+ 220   2              //UART_ClearRxBuffer();
+ 221   2              
+ 222   2          }else{
+ 223   2              
+ 224   2              ByteSent = auiuartrxarray[12];
+ 225   2              
+ 226   2              for(LoopCounterSerial = 13; LoopCounterSerial < (13+ByteSent);LoopCounterSerial++){
+ 227   3                  
+ 228   3                  auimodbusrxarry[LoopCounterSerial - 13] = auiuartrxarray[LoopCounterSerial];
+ 229   3              }
+ 230   2              
+ 231   2              CRCResult = CalculateCRC16(auimodbusrxarry,ByteSent);
+ 232   2              uint8to16conversionflag = 1;
+ 233   2              if(CRCResult == Uint8_to_Uint16Conversion( 19, 20)){
+ 234   3                  
+ 235   3                  uint8to16conversionflag = 2;
+ 236   3                  Twobyte1 = Uint8_to_Uint16Conversion( 2, 3);
+ 237   3                  Twobyte2 = Uint8_to_Uint16Conversion( 4, 5);
+ 238   3                  
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 5   
+
+ 239   3                  if((auimodbusrxarry[1] != FunctionCode) &&(auimodbusrxarry[1] != SingleWrite) &&(auimodbusrxar
+             -ry[1] != MultipleWrite)){
+ 240   4                      
+ 241   4                      Errorflag = FunctionCodeError;
+ 242   4                      Modbus_Error_Response(auimodbusrxarry , 1);
+ 243   4                      
+ 244   4                  }else if(auimodbusrxarry[1] == SingleWrite){
+ 245   4                      if((Twobyte1 < StartRegisterAdd)|| ( Twobyte1 > EndRegisterAdd)){
+ 246   5                          
+ 247   5                          
+ 248   5                          Errorflag = InvalidRegisterAdd;
+ 249   5                          Modbus_Error_Response(auimodbusrxarry , 1);
+ 250   5                          
+ 251   5                      }else{
+ 252   5                          
+ 253   5                          Modbus_Single_Write(Twobyte1 , Twobyte2);
+ 254   5                      }
+ 255   4                          
+ 256   4                      
+ 257   4                  }else if(auimodbusrxarry[1] == MultipleWrite){
+ 258   4                      
+ 259   4                      Modbus_Multiple_Write();
+ 260   4                      
+ 261   4                  }else if( (Twobyte1 < StartRegisterAdd)|| ((Twobyte1 + Twobyte2) > EndRegisterAdd)){
+ 262   4                      
+ 263   4                      if((Twobyte1 + Twobyte2) > EndRegisterAdd){
+ 264   5                          
+ 265   5                          Errorflag = InvalidRegisterAdd;
+ 266   5                          Modbus_Error_Response(auimodbusrxarry , 1);
+ 267   5                      }else{
+ 268   5                          
+ 269   5                          Errorflag = InvalidRegisterAdd;
+ 270   5                          Modbus_Error_Response(auimodbusrxarry , 1);
+ 271   5                      }
+ 272   4                      
+ 273   4                  }else if (auimodbusrxarry[1] == FunctionCode){
+ 274   4                      
+ 275   4                      Modbus_Response(Twobyte1,Twobyte2);
+ 276   4                  }
+ 277   3                  else{
+ 278   4                      
+ 279   4                      
+ 280   4                  }
+ 281   3              }else{
+ 282   3                   
+ 283   3                  Errorflag = CRCError;
+ 284   3              }
+ 285   2          }
+ 286   1      
+ 287   1      }
+ 288          
+ 289          /*******************************************************************************
+ 290          * Function Name: Uint8_to_Uint16Conversion
+ 291          ********************************************************************************
+ 292          *
+ 293          * Summary:
+ 294          *  
+ 295          * This function converts byte to two bytes 
+ 296          *  
+ 297          *
+ 298          * Parameters:
+ 299          *  firstindex,secondindex, index
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 6   
+
+ 300          *
+ 301          * Return:
+ 302          *  None
+ 303          *
+ 304          *******************************************************************************/
+ 305          uint16 Uint8_to_Uint16Conversion(uint8 firstindex, uint8 lastindex){
+ 306   1      
+ 307   1          uint16 Hex2bytes;
+ 308   1          
+ 309   1          if(uint8to16conversionflag == 1){
+ 310   2               
+ 311   2              for(LoopCounterSerial = firstindex; LoopCounterSerial < lastindex;LoopCounterSerial++){
+ 312   3                  
+ 313   3                  Hex2bytes = auiuartrxarray[LoopCounterSerial]; 
+ 314   3                  Hex2bytes = Hex2bytes << Shift_8_bits;
+ 315   3                  LoopCounterSerial++;
+ 316   3                  Hex2bytes |= auiuartrxarray[LoopCounterSerial];
+ 317   3      
+ 318   3              }
+ 319   2          } else if(uint8to16conversionflag == 2){
+ 320   2              
+ 321   2                  for(LoopCounterSerial = firstindex; LoopCounterSerial < lastindex;LoopCounterSerial++){
+ 322   3                  
+ 323   3                  Hex2bytes = auimodbusrxarry[LoopCounterSerial]; 
+ 324   3                  Hex2bytes = Hex2bytes << Shift_8_bits;
+ 325   3                  LoopCounterSerial++;
+ 326   3                  Hex2bytes |= auimodbusrxarry[LoopCounterSerial];
+ 327   3      
+ 328   3              }       
+ 329   2          }
+ 330   1          
+ 331   1         return Hex2bytes;
+ 332   1      }
+ 333          /*******************************************************************************
+ 334          * Function Name: Modbus_Error_Response
+ 335          ********************************************************************************
+ 336          *
+ 337          * Summary:
+ 338          *  
+ 339          * This function processess the UART Error   
+ 340          *  
+ 341          *
+ 342          * Parameters:
+ 343          *  None
+ 344          *
+ 345          * Return:
+ 346          *  None
+ 347          *
+ 348          *******************************************************************************/
+ 349          void Modbus_Error_Response(uint8 modbusarray[] , uint8 index){
+ 350   1          
+ 351   1          char Fucntioncodeerror;
+ 352   1          uint16 CRC;
+ 353   1          auiresponseerror [0] = DeviceID;
+ 354   1          
+ 355   1          if(Errorflag == FunctionCodeError){
+ 356   2            
+ 357   2              Fucntioncodeerror = modbusarray[index];
+ 358   2              Fucntioncodeerror = Fucntioncodeerror | 0x80;  
+ 359   2              auiresponseerror [1] = Fucntioncodeerror;
+ 360   2              auiresponseerror [2] = 01;
+ 361   2              CRC = CalculateCRC16(auiresponseerror,3);
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 7   
+
+ 362   2              auiresponseerror [3] = CRC >> Shift_8_bits;
+ 363   2              auiresponseerror [4] = CRC;
+ 364   2              Modbusresponse_Generation(1);
+ 365   2              
+ 366   2          }else if(Errorflag == InvalidRegisterAdd){
+ 367   2              
+ 368   2              Fucntioncodeerror = modbusarray[index];
+ 369   2              Fucntioncodeerror = Fucntioncodeerror | 0x80;  
+ 370   2              auiresponseerror [1] = Fucntioncodeerror;
+ 371   2              auiresponseerror [2] = 02;
+ 372   2              CRC = CalculateCRC16(auiresponseerror,3);
+ 373   2              auiresponseerror [3] = CRC >> Shift_8_bits;
+ 374   2              auiresponseerror [4] = CRC;
+ 375   2              Modbusresponse_Generation(1);
+ 376   2              
+ 377   2          }    
+ 378   1      
+ 379   1      }
+ 380          
+ 381          /*******************************************************************************
+ 382          * Function Name: Modbus_Single_Write
+ 383          ********************************************************************************
+ 384          *
+ 385          * Summary:
+ 386          *  
+ 387          * This function writes to array   
+ 388          *  
+ 389          *
+ 390          * Parameters:
+ 391          *  None
+ 392          *
+ 393          * Return:
+ 394          *  None
+ 395          *
+ 396          *******************************************************************************/
+ 397          void Modbus_Single_Write(uint16 RegAdd, uint16 value){
+ 398   1          
+ 399   1          auigreenduration[(RegAdd-100)] = value; 
+ 400   1          EEPROMWriteFlag = 2;
+ 401   1          EEPROM_WriteFunction((RegAdd - 100));
+ 402   1          
+ 403   1          Modbus_Response( RegAdd ,Singlewriteflag);
+ 404   1      //    Modbusresponse_Generation(3);
+ 405   1      }
+ 406          
+ 407          /*******************************************************************************
+ 408          * Function Name: Modbus_Multiple_Write
+ 409          ********************************************************************************
+ 410          *
+ 411          * Summary:
+ 412          *  
+ 413          * This function writes to array   
+ 414          *  
+ 415          *
+ 416          * Parameters:
+ 417          *  None
+ 418          *
+ 419          * Return:
+ 420          *  None
+ 421          *
+ 422          *******************************************************************************/
+ 423          void Modbus_Multiple_Write(){
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 8   
+
+ 424   1          
+ 425   1          
+ 426   1          
+ 427   1      }
+ 428          /*******************************************************************************
+ 429          * Function Name: Modbus_Response
+ 430          ********************************************************************************
+ 431          *
+ 432          * Summary:
+ 433          *  
+ 434          * This function generates the valid Modbus response   
+ 435          *  
+ 436          *
+ 437          * Parameters:
+ 438          *  None
+ 439          *
+ 440          * Return:
+ 441          *  None
+ 442          *
+ 443          *******************************************************************************/
+ 444          void Modbus_Response(uint16 StartAddress, uint16 RegCount){
+ 445   1         
+ 446   1          uint8 LoopCounter1 = 0;
+ 447   1          uint8 LoopCounter2 = 0;
+ 448   1          uint16 RegisterAddress =(StartAddress - 100);
+ 449   1          uint8 index1 = 3;
+ 450   1          uint8 Responselenght = 0;
+ 451   1          uint16 CRC = 0;
+ 452   1          auiresposearray[0] = DeviceID;
+ 453   1          if(RegCount == Singlewriteflag){
+ 454   2              index1 = 1;
+ 455   2              EEPROM_Read(RegisterAddress , auigreenduration[RegisterAddress] );  
+ 456   2              auiresposearray[index1++] = SingleWrite;
+ 457   2              auiresposearray[index1++] = StartAddress >> Shift_8_bits;
+ 458   2              auiresposearray[index1++] = StartAddress;
+ 459   2              auiresposearray[index1++] = auigreenduration[RegisterAddress] >> Shift_8_bits;
+ 460   2              auiresposearray[index1++] = auigreenduration[RegisterAddress];
+ 461   2              
+ 462   2              Responselenght = 6;
+ 463   2              Bytecount = Responselenght;
+ 464   2              CRC = CalculateCRC16(auiresposearray ,Responselenght);
+ 465   2              auiresposearray[index1++] = CRC >> Shift_8_bits;   
+ 466   2              auiresposearray[index1++] = CRC;
+ 467   2              
+ 468   2         
+ 469   2              for(LoopCounter2 = (index1+1); LoopCounter2 < Responsesize; LoopCounter2 ++ ){
+ 470   3                  
+ 471   3                  auiresposearray[index1] = 0;
+ 472   3                  index1++;
+ 473   3                  auiresposearray[index1] = 0;
+ 474   3                  index1++;  
+ 475   3              }
+ 476   2              
+ 477   2              Modbusresponse_Generation(3);
+ 478   2              
+ 479   2          }else if(RegCount == Multiplewriteflag){
+ 480   2              
+ 481   2              auiresposearray[1] = MultipleWrite;
+ 482   2              auiresposearray[2] = RegisterAddress;
+ 483   2          }else{
+ 484   2              EEPROM_Read(RegisterAddress , RegCount);
+ 485   2              
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 9   
+
+ 486   2              auiresposearray[1] = FunctionCode;
+ 487   2              auiresposearray[2] = (RegCount*2);
+ 488   2              for(LoopCounter1 = RegisterAddress; LoopCounter1 <(RegisterAddress + RegCount); LoopCounter1++){
+ 489   3              
+ 490   3                         auiresposearray[index1] = auigreenduration[LoopCounter1] >> Shift_8_bits;
+ 491   3                         index1++;
+ 492   3                         auiresposearray[index1] = auigreenduration[LoopCounter1]; 
+ 493   3                         index1++;
+ 494   3              }
+ 495   2              Responselenght = ((RegCount*2) + 3);
+ 496   2              Bytecount = Responselenght;
+ 497   2              CRC = CalculateCRC16(auiresposearray ,Responselenght);
+ 498   2              auiresposearray[index1] = CRC >> Shift_8_bits;
+ 499   2              index1++;
+ 500   2              auiresposearray[index1] = CRC;
+ 501   2              index1++;
+ 502   2              
+ 503   2                  for(LoopCounter2 =index1; LoopCounter2 < Responsesize; LoopCounter2 ++ ){
+ 504   3                  
+ 505   3                  
+ 506   3                      
+ 507   3                      auiresposearray[index1] = 0;
+ 508   3                      index1++;
+ 509   3                      auiresposearray[index1] = 0;
+ 510   3                      index1++;  
+ 511   3                  }
+ 512   2                  
+ 513   2              Modbusresponse_Generation(2);
+ 514   2          }
+ 515   1          
+ 516   1      }
+ 517          
+ 518          /*******************************************************************************
+ 519          * Function Name: Modbusresponse_Generation
+ 520          ********************************************************************************
+ 521          *
+ 522          * Summary:
+ 523          *  
+ 524          * This function generating response string  
+ 525          *  
+ 526          *
+ 527          * Parameters:
+ 528          *  fucntioncodeerror
+ 529          *
+ 530          * Return:
+ 531          *  None
+ 532          *
+ 533          *******************************************************************************/
+ 534          void Modbusresponse_Generation(uint8 Responseflag){
+ 535   1          uint16 LoopCounterSerial;
+ 536   1          uint8 index = 29;
+ 537   1          //for(LoopCounter =0; LoopCounter < 5; LoopCounter++){
+ 538   1              if(Responseflag == 1){
+ 539   2                  Bytecount = 3;
+ 540   2                  UART_TxDefault_Values();
+ 541   2                  for(LoopCounterSerial = 0; LoopCounterSerial < ErrorRespArraySize; LoopCounterSerial++){
+ 542   3                      
+ 543   3                      ASCII_Conversion(auiresponseerror[LoopCounterSerial], index);
+ 544   3                      index =index + 2;
+ 545   3                      
+ 546   3                  }     
+ 547   2                  
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 10  
+
+ 548   2              }else if((Responseflag == 2) || (Responseflag == 3)){
+ 549   2                  
+ 550   2                  UART_TxDefault_Values();
+ 551   2                  for(LoopCounterSerial = 0; LoopCounterSerial < Responsesize; LoopCounterSerial++){
+ 552   3                      
+ 553   3                      ASCII_Conversion(auiresposearray[LoopCounterSerial], index);
+ 554   3                      index =index + 2;
+ 555   3                      
+ 556   3                  }
+ 557   2                  
+ 558   2              }
+ 559   1              
+ 560   1              if(Responseflag == 1){
+ 561   2                  
+ 562   2                  LoopCounterSerial = TxRespErrStartindex;
+ 563   2                  
+ 564   2              }else if(Responseflag == 2){
+ 565   2                  
+ 566   2                  LoopCounterSerial = TxRespStartindex;
+ 567   2              }
+ 568   1              
+ 569   1              
+ 570   1              for( ; LoopCounterSerial < UART_TxBuffersize; LoopCounterSerial++){
+ 571   2                  
+ 572   2                      if(LoopCounterSerial == (UART_TxBuffersize - 1)){
+ 573   3                          
+ 574   3                          acuarttxbuffer[LoopCounterSerial] = '#';
+ 575   3                          //LoopCounterSerial++;
+ 576   3                      }
+ 577   2                      else{
+ 578   3                          
+ 579   3                          acuarttxbuffer[LoopCounterSerial] = '0';
+ 580   3                          
+ 581   3                      }
+ 582   2              }
+ 583   1              
+ 584   1              UART_TxOperation(acuarttxbuffer,UART_TxBuffersize);
+ 585   1      
+ 586   1      }
+ 587          
+ 588          /*******************************************************************************
+ 589          * Function Name: UART_TxDefault_Values
+ 590          ********************************************************************************
+ 591          *
+ 592          * Summary:
+ 593          *  
+ 594          * This function fills the default char to txbuffer array   
+ 595          *  
+ 596          *
+ 597          * Parameters:
+ 598          *  firstindex,secondindex, index
+ 599          *
+ 600          * Return:
+ 601          *  None
+ 602          *
+ 603          *******************************************************************************/
+ 604          void UART_TxDefault_Values(void){
+ 605   1          
+ 606   1          acuarttxbuffer[0] = '$';
+ 607   1          
+ 608   1          ASCII_Conversion( 0, 1);
+ 609   1          ASCII_Conversion( 1, 3);
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 11  
+
+ 610   1          ASCII_Conversion( 3, 5);
+ 611   1          acuarttxbuffer[7] = ',';
+ 612   1          ASCII_Conversion( 1, 8);
+ 613   1          ASCII_Conversion( 4, 10);
+ 614   1          ASCII_Conversion( 0, 12);
+ 615   1          ASCII_Conversion( 1, 14);
+ 616   1          ASCII_Conversion( 0x2C, 16);
+ 617   1          ASCII_Conversion( 3, 18);
+ 618   1          ASCII_Conversion( 0, 20);
+ 619   1          ASCII_Conversion( 0, 22);
+ 620   1          ASCII_Conversion( 0, 24);
+ 621   1          acuarttxbuffer[26] = ',';
+ 622   1          ASCII_Conversion(Bytecount,27);
+ 623   1      
+ 624   1          
+ 625   1      }
+ 626          
+ 627          /*******************************************************************************
+ 628          * Function Name: ASCII_Conversion
+ 629          ********************************************************************************
+ 630          *
+ 631          * Summary:
+ 632          *  
+ 633          * This function converts Hex to ASCII value  
+ 634          *  
+ 635          *
+ 636          * Parameters:
+ 637          *  None
+ 638          *
+ 639          * Return:
+ 640          *  None
+ 641          *
+ 642          *******************************************************************************/
+ 643          void ASCII_Conversion(uint8 hexbytevalue, uint8 index){
+ 644   1          
+ 645   1          char CharecterValue[2];
+ 646   1          
+ 647   1          sprintf(CharecterValue,"%02X",(uint16)hexbytevalue);
+ 648   1          acuarttxbuffer[index] = CharecterValue[0];
+ 649   1          index++;
+ 650   1          acuarttxbuffer[index] = CharecterValue[1];
+ 651   1      
+ 652   1      }
+ 653          
+ 654          /*******************************************************************************
+ 655          * Function Name: UART_TxOperation
+ 656          ********************************************************************************
+ 657          *
+ 658          * Summary:
+ 659          *  
+ 660          * This function put the array data into tx buffer     
+ 661          *  
+ 662          *
+ 663          * Parameters:
+ 664          *  None
+ 665          *
+ 666          * Return:
+ 667          *  None
+ 668          *
+ 669          *******************************************************************************/
+ 670          void UART_TxOperation(char arraydata[] , uint16 size){
+ 671   1          
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 12  
+
+ 672   1          uint16 loopcounter = 0;
+ 673   1           
+ 674   1          while((arraydata[loopcounter]!= (char) 0) & (loopcounter < size)){
+ 675   2              
+ 676   2              UART_PutChar((uint8 )arraydata[loopcounter]);
+ 677   2              loopcounter++;
+ 678   2              while(!(UART_ReadTxStatus() & UART_TX_STS_COMPLETE));
+ 679   2          }
+ 680   1          
+ 681   1          UART_ClearTxBuffer();
+ 682   1      //    UART_PutArray( array , size);
+ 683   1      //     CyDelay(1000);     
+ 684   1      }
+ 685          
+ 686          /*******************************************************************************
+ 687          * Function Name: UART_RxOperation
+ 688          ********************************************************************************
+ 689          *
+ 690          * Summary:
+ 691          *  
+ 692          * This function receives the data and stores it into array  
+ 693          *  
+ 694          *
+ 695          * Parameters:
+ 696          *  None
+ 697          *
+ 698          * Return:
+ 699          *  None
+ 700          *
+ 701          *******************************************************************************/
+ 702          
+ 703          void UART_RxOperation(uint16 size){
+ 704   1              
+ 705   1              Bytecount = Startindex + size ;
+ 706   1              for(LoopCounterSerial = Startindex ; LoopCounterSerial < Bytecount; LoopCounterSerial++){
+ 707   2                      
+ 708   2                  acuartrxbuffer[LoopCounterSerial] = UART_ReadRxData();
+ 709   2                  
+ 710   2              }
+ 711   1              Startindex = Bytecount;
+ 712   1              Uint8_to_Uint16Conversion( Startindex , Bytecount);
+ 713   1          
+ 714   1      }
+ 715          
+ 716          /*****************************************************************************
+ 717          *** Modbus CRC calculation as per specification given in MODBUS.ORG
+ 718          *** Uses table for polynomial 1010 0000 0000 0001 = 0xA0001
+ 719          *** Can be used for string received or string to be transmitted
+ 720          *** MsgStartAddr - Starting address of the message
+ 721          *** MsgLength    - Length of the message (excluding CRC)
+ 722          *** Returns a 16 bit CRC value
+ 723          *****************************************************************************/
+ 724          
+ 725          uint16 CalculateCRC16(uint8 *MsgStartAddr, uint8 MsgLength){
+ 726   1          uint16 ui16Response=0;
+ 727   1          uint8 index;
+ 728   1              
+ 729   1          uint8 CRCtmpHi = 0xFF;                      // Initialize CRC register to 0xFFFF
+ 730   1          uint8 CRCtmpLo = 0xFF;
+ 731   1      
+ 732   1          while(MsgLength--)                                  // Find CRC for each byte of the string
+ 733   1          {
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 13  
+
+ 734   2              index = CRCtmpLo ^ *MsgStartAddr++;
+ 735   2              CRCtmpLo = CRCtmpHi ^ TabCRCHi[index];
+ 736   2              CRCtmpHi = TabCRCLo[index];
+ 737   2          }
+ 738   1              
+ 739   1          ui16Response = CRCtmpLo;
+ 740   1          ui16Response = ui16Response << 8;
+ 741   1          ui16Response = ui16Response | CRCtmpHi;
+ 742   1          CRC.Byte.Hi = CRCtmpHi;                             // Update the CRC registers
+ 743   1          CRC.Byte.Lo = CRCtmpLo;
+ 744   1          
+ 745   1          return ui16Response;
+ 746   1      }
+ 747          
+ 748          
+ 749          /*******************************************************************************
+ 750          * Function Name: Check_For_Proper_Response
+ 751          ********************************************************************************
+ 752          *
+ 753          * Summary:
+ 754          *  
+ 755          * This function checks for $ at the first index of rx buffer, if it is not present 
+ 756          * clears the buffer 
+ 757          *
+ 758          * Parameters:
+ 759          *  None
+ 760          *
+ 761          * Return:
+ 762          *  None
+ 763          *
+ 764          *******************************************************************************/
+ 765          void Check_For_Proper_Response(void){
+ 766   1          if(UART_GetRxBufferSize()){
+ 767   2              if(UART_rxBuffer[0] != '$'){
+ 768   3                  UART_ClearRxBuffer();
+ 769   3              }
+ 770   2          }
+ 771   1      }
+ 772          /* [] END OF FILE */
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 14  
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION UART_Start_Operation (BEGIN)
+                                           ; SOURCE LINE # 53
+                                           ; SOURCE LINE # 55
+0000 120000      E     LCALL   UART_Start
+                                           ; SOURCE LINE # 56
+0003 9044C0            MOV     DPTR,#044C0H
+0006 7408              MOV     A,#08H
+0008 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 57
+0009 9044C0            MOV     DPTR,#044C0H
+000C 7410              MOV     A,#010H
+000E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 58
+000F 120000      E     LCALL   UART_ClearRxBuffer
+                                           ; SOURCE LINE # 59
+0012 120000      E     LCALL   UART_ClearTxBuffer
+                                           ; SOURCE LINE # 60
+0015 22                RET     
+             ; FUNCTION UART_Start_Operation (END)
+
+             ; FUNCTION UART_Read (BEGIN)
+                                           ; SOURCE LINE # 78
+                                           ; SOURCE LINE # 80
+0000 120000      R     LCALL   Check_For_Proper_Response
+                                           ; SOURCE LINE # 82
+0003 120000      E     LCALL   UART_GetRxBufferSize
+0006 7E00              MOV     R6,#00H
+0008 900000      R     MOV     DPTR,#Buffersize
+000B EE                MOV     A,R6
+000C F0                MOVX    @DPTR,A
+000D A3                INC     DPTR
+000E EF                MOV     A,R7
+000F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 84
+0010 900000      R     MOV     DPTR,#Buffersize
+0013 E0                MOVX    A,@DPTR
+0014 FE                MOV     R6,A
+0015 A3                INC     DPTR
+0016 E0                MOVX    A,@DPTR
+0017 FF                MOV     R7,A
+0018 D3                SETB    C
+0019 EF                MOV     A,R7
+001A 947F              SUBB    A,#07FH
+001C EE                MOV     A,R6
+001D 9400              SUBB    A,#00H
+001F 4048              JC      ?C0005
+                                           ; SOURCE LINE # 85
+0021 900000      E     MOV     DPTR,#UART_rxBuffer+07FH
+0024 E0                MOVX    A,@DPTR
+0025 FF                MOV     R7,A
+0026 EF                MOV     A,R7
+0027 6423              XRL     A,#023H
+0029 6004              JZ      ?C0003
+                                           ; SOURCE LINE # 86
+002B 120000      E     LCALL   UART_ClearRxBuffer
+                                           ; SOURCE LINE # 87
+002E 22                RET     
+002F         ?C0003:
+                                           ; SOURCE LINE # 88
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 15  
+
+002F 7E00              MOV     R6,#00H
+0031 7F80              MOV     R7,#080H
+0033 7D00              MOV     R5,#00H
+0035 7B01              MOV     R3,#01H
+0037 7A00        R     MOV     R2,#HIGH acuartrxbuffer
+0039 7900        R     MOV     R1,#LOW acuartrxbuffer
+003B 120000      E     LCALL   ?C?MEMSET
+                                           ; SOURCE LINE # 89
+003E 7B01              MOV     R3,#01H
+0040 7A00        E     MOV     R2,#HIGH UART_rxBuffer
+0042 7900        E     MOV     R1,#LOW UART_rxBuffer
+0044 C003              PUSH    AR3
+0046 C002              PUSH    AR2
+0048 C001              PUSH    AR1
+004A 7B01              MOV     R3,#01H
+004C 7A00        R     MOV     R2,#HIGH acuartrxbuffer
+004E 7900        R     MOV     R1,#LOW acuartrxbuffer
+0050 A801              MOV     R0,AR1
+0052 AC02              MOV     R4,AR2
+0054 AD03              MOV     R5,AR3
+0056 D001              POP     AR1
+0058 D002              POP     AR2
+005A D003              POP     AR3
+005C 7E00              MOV     R6,#00H
+005E 7F80              MOV     R7,#080H
+0060 120000      E     LCALL   ?C?COPYAMD
+                                           ; SOURCE LINE # 90
+0063 120000      E     LCALL   UART_ClearRxBuffer
+                                           ; SOURCE LINE # 91
+0066 120000      R     LCALL   UART_RxChar_to_ByteConversion
+                                           ; SOURCE LINE # 92
+                                           ; SOURCE LINE # 93
+                                           ; SOURCE LINE # 95
+0069         ?C0005:
+0069 22                RET     
+             ; FUNCTION UART_Read (END)
+
+             ; FUNCTION UART_RxChar_to_ByteConversion (BEGIN)
+                                           ; SOURCE LINE # 113
+                                           ; SOURCE LINE # 115
+0000 7BFF              MOV     R3,#0FFH
+0002 7A00        R     MOV     R2,#HIGH _?ix1000
+0004 7900        R     MOV     R1,#LOW _?ix1000
+0006 C003              PUSH    AR3
+0008 C002              PUSH    AR2
+000A C001              PUSH    AR1
+000C 7B01              MOV     R3,#01H
+000E 7A00        R     MOV     R2,#HIGH ASCIIHex
+0010 7900        R     MOV     R1,#LOW ASCIIHex
+0012 A801              MOV     R0,AR1
+0014 AC02              MOV     R4,AR2
+0016 AD03              MOV     R5,AR3
+0018 D001              POP     AR1
+001A D002              POP     AR2
+001C D003              POP     AR3
+001E 7E00              MOV     R6,#00H
+0020 7F02              MOV     R7,#02H
+0022 120000      E     LCALL   ?C?COPYAMD
+                                           ; SOURCE LINE # 116
+0025 900000      R     MOV     DPTR,#Stringcounter
+0028 7401              MOV     A,#01H
+002A F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 16  
+
+                                           ; SOURCE LINE # 117
+002B 900000      R     MOV     DPTR,#Arraycounter
+002E E4                CLR     A
+002F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 118
+0030 900000      R     MOV     DPTR,#Conversion
+0033 E4                CLR     A
+0034 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 120
+0035 900000      R     MOV     DPTR,#acuartrxbuffer+07FH
+0038 E0                MOVX    A,@DPTR
+0039 FF                MOV     R7,A
+003A EF                MOV     A,R7
+003B B42304            CJNE    A,#023H,?C0007
+003E 7F01              MOV     R7,#01H
+0040 8002              SJMP    ?C0008
+0042         ?C0007:
+0042 7F00              MOV     R7,#00H
+0044         ?C0008:
+0044 900000      R     MOV     DPTR,#acuartrxbuffer
+0047 E0                MOVX    A,@DPTR
+0048 FE                MOV     R6,A
+0049 EE                MOV     A,R6
+004A B42404            CJNE    A,#024H,?C0009
+004D 7E01              MOV     R6,#01H
+004F 8002              SJMP    ?C0010
+0051         ?C0009:
+0051 7E00              MOV     R6,#00H
+0053         ?C0010:
+0053 EE                MOV     A,R6
+0054 5F                ANL     A,R7
+0055 FF                MOV     R7,A
+0056 EF                MOV     A,R7
+0057 7003              JNZ     $ + 5H
+0059 020000      R     LJMP    ?C0006
+                                           ; SOURCE LINE # 122
+005C 900000      R     MOV     DPTR,#Stringcounter
+005F 7401              MOV     A,#01H
+0061 F0                MOVX    @DPTR,A
+0062         ?C0011:
+0062 900000      R     MOV     DPTR,#Stringcounter
+0065 E0                MOVX    A,@DPTR
+0066 FF                MOV     R7,A
+0067 EF                MOV     A,R7
+0068 C3                CLR     C
+0069 947F              SUBB    A,#07FH
+006B 5075              JNC     ?C0012
+                                           ; SOURCE LINE # 123
+006D 900000      R     MOV     DPTR,#Stringcounter
+0070 E0                MOVX    A,@DPTR
+0071 FF                MOV     R7,A
+0072 7400        R     MOV     A,#LOW acuartrxbuffer
+0074 2F                ADD     A,R7
+0075 F582              MOV     DPL,A
+0077 E4                CLR     A
+0078 3400        R     ADDC    A,#HIGH acuartrxbuffer
+007A F583              MOV     DPH,A
+007C E0                MOVX    A,@DPTR
+007D FF                MOV     R7,A
+007E EF                MOV     A,R7
+007F B42C08            CJNE    A,#02CH,?C0013
+                                           ; SOURCE LINE # 125
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 17  
+
+0082 900000      R     MOV     DPTR,#Stringcounter
+0085 E0                MOVX    A,@DPTR
+0086 04                INC     A
+0087 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 126
+0088 80D8              SJMP    ?C0011
+008A         ?C0013:
+                                           ; SOURCE LINE # 128
+008A 900000      R     MOV     DPTR,#Stringcounter
+008D E0                MOVX    A,@DPTR
+008E FF                MOV     R7,A
+008F 04                INC     A
+0090 F0                MOVX    @DPTR,A
+0091 7400        R     MOV     A,#LOW acuartrxbuffer
+0093 2F                ADD     A,R7
+0094 F582              MOV     DPL,A
+0096 E4                CLR     A
+0097 3400        R     ADDC    A,#HIGH acuartrxbuffer
+0099 F583              MOV     DPH,A
+009B E0                MOVX    A,@DPTR
+009C FF                MOV     R7,A
+009D 900000      R     MOV     DPTR,#ASCIIHex
+00A0 EF                MOV     A,R7
+00A1 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 129
+00A2 900000      R     MOV     DPTR,#Stringcounter
+00A5 E0                MOVX    A,@DPTR
+00A6 FF                MOV     R7,A
+00A7 04                INC     A
+00A8 F0                MOVX    @DPTR,A
+00A9 7400        R     MOV     A,#LOW acuartrxbuffer
+00AB 2F                ADD     A,R7
+00AC F582              MOV     DPL,A
+00AE E4                CLR     A
+00AF 3400        R     ADDC    A,#HIGH acuartrxbuffer
+00B1 F583              MOV     DPH,A
+00B3 E0                MOVX    A,@DPTR
+00B4 FF                MOV     R7,A
+00B5 900000      R     MOV     DPTR,#ASCIIHex+01H
+00B8 EF                MOV     A,R7
+00B9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 130
+00BA 7B01              MOV     R3,#01H
+00BC 7A00        R     MOV     R2,#HIGH ASCIIHex
+00BE 7900        R     MOV     R1,#LOW ASCIIHex
+00C0 120000      R     LCALL   _ASCII_to_HexConversion
+00C3 900000      R     MOV     DPTR,#Conversion
+00C6 EF                MOV     A,R7
+00C7 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 131
+00C8 900000      R     MOV     DPTR,#Conversion
+00CB E0                MOVX    A,@DPTR
+00CC FF                MOV     R7,A
+00CD 900000      R     MOV     DPTR,#Arraycounter
+00D0 E0                MOVX    A,@DPTR
+00D1 FE                MOV     R6,A
+00D2 04                INC     A
+00D3 F0                MOVX    @DPTR,A
+00D4 7400        R     MOV     A,#LOW auiuartrxarray
+00D6 2E                ADD     A,R6
+00D7 F582              MOV     DPL,A
+00D9 E4                CLR     A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 18  
+
+00DA 3400        R     ADDC    A,#HIGH auiuartrxarray
+00DC F583              MOV     DPH,A
+00DE EF                MOV     A,R7
+00DF F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 132
+                                           ; SOURCE LINE # 134
+00E0 8080              SJMP    ?C0011
+00E2         ?C0012:
+                                           ; SOURCE LINE # 136
+00E2 120000      R     LCALL   Modbuslike_Process
+                                           ; SOURCE LINE # 137
+00E5 22                RET     
+00E6         ?C0006:
+                                           ; SOURCE LINE # 139
+00E6 120000      E     LCALL   UART_ClearRxBuffer
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 144
+00E9         ?C0016:
+00E9 22                RET     
+             ; FUNCTION UART_RxChar_to_ByteConversion (END)
+
+             ; FUNCTION _ASCII_to_HexConversion (BEGIN)
+                                           ; SOURCE LINE # 162
+0000 900000      R     MOV     DPTR,#ASCIIHex
+0003 120000      E     LCALL   ?C?PSTXDATA
+                                           ; SOURCE LINE # 168
+0006 900000      R     MOV     DPTR,#ASCIIHex
+0009 120000      E     LCALL   ?C?PLDXDATA
+000C 120000      E     LCALL   ?C?CLDPTR
+000F FF                MOV     R7,A
+0010 900000      R     MOV     DPTR,#cCharhighernibble
+0013 EF                MOV     A,R7
+0014 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 169
+0015 900000      R     MOV     DPTR,#ASCIIHex
+0018 120000      E     LCALL   ?C?PLDXDATA
+001B E9                MOV     A,R1
+001C 2401              ADD     A,#01H
+001E F9                MOV     R1,A
+001F EA                MOV     A,R2
+0020 3400              ADDC    A,#00H
+0022 FA                MOV     R2,A
+0023 120000      E     LCALL   ?C?CLDPTR
+0026 FF                MOV     R7,A
+0027 900000      R     MOV     DPTR,#cCharlowernibble
+002A EF                MOV     A,R7
+002B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 171
+002C 900000      R     MOV     DPTR,#cCharhighernibble
+002F E0                MOVX    A,@DPTR
+0030 FF                MOV     R7,A
+0031 D3                SETB    C
+0032 EF                MOV     A,R7
+0033 6480              XRL     A,#080H
+0035 94B9              SUBB    A,#0B9H
+0037 4007              JC      ?C0017
+                                           ; SOURCE LINE # 173
+0039 900000      R     MOV     DPTR,#cCharhighernibble
+003C E0                MOVX    A,@DPTR
+003D 24F9              ADD     A,#0F9H
+003F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 174
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 19  
+
+0040         ?C0017:
+                                           ; SOURCE LINE # 176
+0040 900000      R     MOV     DPTR,#cCharhighernibble
+0043 E0                MOVX    A,@DPTR
+0044 24D0              ADD     A,#0D0H
+0046 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 178
+0047 900000      R     MOV     DPTR,#cCharhighernibble
+004A E0                MOVX    A,@DPTR
+004B FF                MOV     R7,A
+004C 900000      R     MOV     DPTR,#Hexbyte
+004F EF                MOV     A,R7
+0050 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 179
+0051 900000      R     MOV     DPTR,#Hexbyte
+0054 E0                MOVX    A,@DPTR
+0055 FF                MOV     R7,A
+0056 EF                MOV     A,R7
+0057 C4                SWAP    A
+0058 54F0              ANL     A,#0F0H
+005A FF                MOV     R7,A
+005B 900000      R     MOV     DPTR,#Hexbyte
+005E EF                MOV     A,R7
+005F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 181
+0060 900000      R     MOV     DPTR,#cCharlowernibble
+0063 E0                MOVX    A,@DPTR
+0064 FF                MOV     R7,A
+0065 D3                SETB    C
+0066 EF                MOV     A,R7
+0067 6480              XRL     A,#080H
+0069 94B9              SUBB    A,#0B9H
+006B 4007              JC      ?C0018
+                                           ; SOURCE LINE # 183
+006D 900000      R     MOV     DPTR,#cCharlowernibble
+0070 E0                MOVX    A,@DPTR
+0071 24F9              ADD     A,#0F9H
+0073 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 184
+0074         ?C0018:
+                                           ; SOURCE LINE # 186
+0074 900000      R     MOV     DPTR,#cCharlowernibble
+0077 E0                MOVX    A,@DPTR
+0078 24D0              ADD     A,#0D0H
+007A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 188
+007B 900000      R     MOV     DPTR,#Hexbyte
+007E E0                MOVX    A,@DPTR
+007F FF                MOV     R7,A
+0080 900000      R     MOV     DPTR,#cCharlowernibble
+0083 E0                MOVX    A,@DPTR
+0084 FE                MOV     R6,A
+0085 EE                MOV     A,R6
+0086 4F                ORL     A,R7
+0087 FF                MOV     R7,A
+0088 900000      R     MOV     DPTR,#Hexbyte
+008B EF                MOV     A,R7
+008C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 190
+008D 900000      R     MOV     DPTR,#Hexbyte
+0090 E0                MOVX    A,@DPTR
+0091 FF                MOV     R7,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 20  
+
+                                           ; SOURCE LINE # 192
+0092         ?C0019:
+0092 22                RET     
+             ; FUNCTION _ASCII_to_HexConversion (END)
+
+             ; FUNCTION Modbuslike_Process (BEGIN)
+                                           ; SOURCE LINE # 211
+                                           ; SOURCE LINE # 213
+0000 900000      R     MOV     DPTR,#ByteSent
+0003 E4                CLR     A
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 214
+0005 900000      R     MOV     DPTR,#CRCResult
+0008 E4                CLR     A
+0009 F0                MOVX    @DPTR,A
+000A A3                INC     DPTR
+000B E4                CLR     A
+000C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 215
+000D 900000      R     MOV     DPTR,#Twobyte1
+0010 E4                CLR     A
+0011 F0                MOVX    @DPTR,A
+0012 A3                INC     DPTR
+0013 E4                CLR     A
+0014 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 216
+0015 900000      R     MOV     DPTR,#Twobyte2
+0018 E4                CLR     A
+0019 F0                MOVX    @DPTR,A
+001A A3                INC     DPTR
+001B E4                CLR     A
+001C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 218
+001D 900000      R     MOV     DPTR,#auiuartrxarray+0DH
+0020 E0                MOVX    A,@DPTR
+0021 FF                MOV     R7,A
+0022 EF                MOV     A,R7
+0023 6411              XRL     A,#011H
+0025 6003              JZ      $ + 5H
+0027 020000      R     LJMP    ?C0043
+                                           ; SOURCE LINE # 222
+002A         ?C0020:
+                                           ; SOURCE LINE # 224
+002A 900000      R     MOV     DPTR,#auiuartrxarray+0CH
+002D E0                MOVX    A,@DPTR
+002E FF                MOV     R7,A
+002F 900000      R     MOV     DPTR,#ByteSent
+0032 EF                MOV     A,R7
+0033 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 226
+0034 900000      R     MOV     DPTR,#LoopCounterSerial
+0037 740D              MOV     A,#0DH
+0039 F0                MOVX    @DPTR,A
+003A         ?C0022:
+003A 900000      R     MOV     DPTR,#ByteSent
+003D E0                MOVX    A,@DPTR
+003E FF                MOV     R7,A
+003F EF                MOV     A,R7
+0040 240D              ADD     A,#0DH
+0042 FF                MOV     R7,A
+0043 900000      R     MOV     DPTR,#LoopCounterSerial
+0046 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 21  
+
+0047 FE                MOV     R6,A
+0048 EE                MOV     A,R6
+0049 C3                CLR     C
+004A 9F                SUBB    A,R7
+004B 502A              JNC     ?C0023
+                                           ; SOURCE LINE # 228
+004D 900000      R     MOV     DPTR,#LoopCounterSerial
+0050 E0                MOVX    A,@DPTR
+0051 FF                MOV     R7,A
+0052 7400        R     MOV     A,#LOW auiuartrxarray
+0054 2F                ADD     A,R7
+0055 F582              MOV     DPL,A
+0057 E4                CLR     A
+0058 3400        R     ADDC    A,#HIGH auiuartrxarray
+005A F583              MOV     DPH,A
+005C E0                MOVX    A,@DPTR
+005D FF                MOV     R7,A
+005E 900000      R     MOV     DPTR,#LoopCounterSerial
+0061 E0                MOVX    A,@DPTR
+0062 FE                MOV     R6,A
+0063 7400        R     MOV     A,#LOW auimodbusrxarry+0FFF3H
+0065 2E                ADD     A,R6
+0066 F582              MOV     DPL,A
+0068 E4                CLR     A
+0069 3400        R     ADDC    A,#HIGH auimodbusrxarry+0FFF3H
+006B F583              MOV     DPH,A
+006D EF                MOV     A,R7
+006E F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 229
+006F 900000      R     MOV     DPTR,#LoopCounterSerial
+0072 E0                MOVX    A,@DPTR
+0073 04                INC     A
+0074 F0                MOVX    @DPTR,A
+0075 80C3              SJMP    ?C0022
+0077         ?C0023:
+                                           ; SOURCE LINE # 231
+0077 7B01              MOV     R3,#01H
+0079 7A00        R     MOV     R2,#HIGH auimodbusrxarry
+007B 7900        R     MOV     R1,#LOW auimodbusrxarry
+007D 900000      R     MOV     DPTR,#ByteSent
+0080 E0                MOVX    A,@DPTR
+0081 FD                MOV     R5,A
+0082 120000      R     LCALL   _CalculateCRC16
+0085 900000      R     MOV     DPTR,#CRCResult
+0088 EE                MOV     A,R6
+0089 F0                MOVX    @DPTR,A
+008A A3                INC     DPTR
+008B EF                MOV     A,R7
+008C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 232
+008D 900000      R     MOV     DPTR,#uint8to16conversionflag
+0090 7401              MOV     A,#01H
+0092 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 233
+0093 7D14              MOV     R5,#014H
+0095 7F13              MOV     R7,#013H
+0097 120000      R     LCALL   _Uint8_to_Uint16Conversion
+009A 900000      R     MOV     DPTR,#CRCResult
+009D E0                MOVX    A,@DPTR
+009E FC                MOV     R4,A
+009F A3                INC     DPTR
+00A0 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 22  
+
+00A1 FD                MOV     R5,A
+00A2 EF                MOV     A,R7
+00A3 6D                XRL     A,R5
+00A4 7002              JNZ     ?C0114
+00A6 EE                MOV     A,R6
+00A7 6C                XRL     A,R4
+00A8         ?C0114:
+00A8 6003              JZ      $ + 5H
+00AA 020000      R     LJMP    ?C0025
+                                           ; SOURCE LINE # 235
+00AD 900000      R     MOV     DPTR,#uint8to16conversionflag
+00B0 7402              MOV     A,#02H
+00B2 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 236
+00B3 7D03              MOV     R5,#03H
+00B5 7F02              MOV     R7,#02H
+00B7 120000      R     LCALL   _Uint8_to_Uint16Conversion
+00BA 900000      R     MOV     DPTR,#Twobyte1
+00BD EE                MOV     A,R6
+00BE F0                MOVX    @DPTR,A
+00BF A3                INC     DPTR
+00C0 EF                MOV     A,R7
+00C1 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 237
+00C2 7D05              MOV     R5,#05H
+00C4 7F04              MOV     R7,#04H
+00C6 120000      R     LCALL   _Uint8_to_Uint16Conversion
+00C9 900000      R     MOV     DPTR,#Twobyte2
+00CC EE                MOV     A,R6
+00CD F0                MOVX    @DPTR,A
+00CE A3                INC     DPTR
+00CF EF                MOV     A,R7
+00D0 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 239
+00D1 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+00D4 E0                MOVX    A,@DPTR
+00D5 FF                MOV     R7,A
+00D6 EF                MOV     A,R7
+00D7 6403              XRL     A,#03H
+00D9 6026              JZ      ?C0026
+00DB 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+00DE E0                MOVX    A,@DPTR
+00DF FF                MOV     R7,A
+00E0 EF                MOV     A,R7
+00E1 6406              XRL     A,#06H
+00E3 601C              JZ      ?C0026
+00E5 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+00E8 E0                MOVX    A,@DPTR
+00E9 FF                MOV     R7,A
+00EA EF                MOV     A,R7
+00EB 6410              XRL     A,#010H
+00ED 6012              JZ      ?C0026
+                                           ; SOURCE LINE # 241
+00EF 900000      R     MOV     DPTR,#Errorflag
+00F2 7401              MOV     A,#01H
+00F4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 242
+00F5 7B01              MOV     R3,#01H
+00F7 7A00        R     MOV     R2,#HIGH auimodbusrxarry
+00F9 7900        R     MOV     R1,#LOW auimodbusrxarry
+00FB 7D01              MOV     R5,#01H
+00FD 120000      R     LCALL   _Modbus_Error_Response
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 23  
+
+                                           ; SOURCE LINE # 244
+0100 22                RET     
+0101         ?C0026:
+0101 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+0104 E0                MOVX    A,@DPTR
+0105 FF                MOV     R7,A
+0106 EF                MOV     A,R7
+0107 6406              XRL     A,#06H
+0109 7048              JNZ     ?C0028
+                                           ; SOURCE LINE # 245
+010B 900000      R     MOV     DPTR,#Twobyte1
+010E E0                MOVX    A,@DPTR
+010F FE                MOV     R6,A
+0110 A3                INC     DPTR
+0111 E0                MOVX    A,@DPTR
+0112 FF                MOV     R7,A
+0113 C3                CLR     C
+0114 EF                MOV     A,R7
+0115 9464              SUBB    A,#064H
+0117 EE                MOV     A,R6
+0118 9400              SUBB    A,#00H
+011A 4011              JC      ?C0030
+011C 900000      R     MOV     DPTR,#Twobyte1
+011F E0                MOVX    A,@DPTR
+0120 FE                MOV     R6,A
+0121 A3                INC     DPTR
+0122 E0                MOVX    A,@DPTR
+0123 FF                MOV     R7,A
+0124 D3                SETB    C
+0125 EF                MOV     A,R7
+0126 9492              SUBB    A,#092H
+0128 EE                MOV     A,R6
+0129 9400              SUBB    A,#00H
+012B 4012              JC      ?C0029
+012D         ?C0030:
+                                           ; SOURCE LINE # 248
+012D 900000      R     MOV     DPTR,#Errorflag
+0130 7402              MOV     A,#02H
+0132 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 249
+0133 7B01              MOV     R3,#01H
+0135 7A00        R     MOV     R2,#HIGH auimodbusrxarry
+0137 7900        R     MOV     R1,#LOW auimodbusrxarry
+0139 7D01              MOV     R5,#01H
+013B 120000      R     LCALL   _Modbus_Error_Response
+                                           ; SOURCE LINE # 251
+013E 22                RET     
+013F         ?C0029:
+                                           ; SOURCE LINE # 253
+013F 900000      R     MOV     DPTR,#Twobyte1
+0142 E0                MOVX    A,@DPTR
+0143 FE                MOV     R6,A
+0144 A3                INC     DPTR
+0145 E0                MOVX    A,@DPTR
+0146 FF                MOV     R7,A
+0147 900000      R     MOV     DPTR,#Twobyte2
+014A E0                MOVX    A,@DPTR
+014B FC                MOV     R4,A
+014C A3                INC     DPTR
+014D E0                MOVX    A,@DPTR
+014E FD                MOV     R5,A
+014F 120000      R     LCALL   _Modbus_Single_Write
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 24  
+
+                                           ; SOURCE LINE # 254
+                                           ; SOURCE LINE # 257
+0152 22                RET     
+0153         ?C0028:
+0153 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+0156 E0                MOVX    A,@DPTR
+0157 FF                MOV     R7,A
+0158 EF                MOV     A,R7
+0159 B41004            CJNE    A,#010H,?C0033
+                                           ; SOURCE LINE # 259
+015C 120000      R     LCALL   Modbus_Multiple_Write
+                                           ; SOURCE LINE # 261
+015F 22                RET     
+0160         ?C0033:
+0160 900000      R     MOV     DPTR,#Twobyte1
+0163 E0                MOVX    A,@DPTR
+0164 FE                MOV     R6,A
+0165 A3                INC     DPTR
+0166 E0                MOVX    A,@DPTR
+0167 FF                MOV     R7,A
+0168 C3                CLR     C
+0169 EF                MOV     A,R7
+016A 9464              SUBB    A,#064H
+016C EE                MOV     A,R6
+016D 9400              SUBB    A,#00H
+016F 401F              JC      ?C0036
+0171 900000      R     MOV     DPTR,#Twobyte2
+0174 E0                MOVX    A,@DPTR
+0175 FE                MOV     R6,A
+0176 A3                INC     DPTR
+0177 E0                MOVX    A,@DPTR
+0178 FF                MOV     R7,A
+0179 900000      R     MOV     DPTR,#Twobyte1
+017C E0                MOVX    A,@DPTR
+017D FC                MOV     R4,A
+017E A3                INC     DPTR
+017F E0                MOVX    A,@DPTR
+0180 FD                MOV     R5,A
+0181 ED                MOV     A,R5
+0182 2F                ADD     A,R7
+0183 FF                MOV     R7,A
+0184 EC                MOV     A,R4
+0185 3E                ADDC    A,R6
+0186 FE                MOV     R6,A
+0187 D3                SETB    C
+0188 EF                MOV     A,R7
+0189 9492              SUBB    A,#092H
+018B EE                MOV     A,R6
+018C 9400              SUBB    A,#00H
+018E 4043              JC      ?C0035
+0190         ?C0036:
+                                           ; SOURCE LINE # 263
+0190 900000      R     MOV     DPTR,#Twobyte2
+0193 E0                MOVX    A,@DPTR
+0194 FE                MOV     R6,A
+0195 A3                INC     DPTR
+0196 E0                MOVX    A,@DPTR
+0197 FF                MOV     R7,A
+0198 900000      R     MOV     DPTR,#Twobyte1
+019B E0                MOVX    A,@DPTR
+019C FC                MOV     R4,A
+019D A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 25  
+
+019E E0                MOVX    A,@DPTR
+019F FD                MOV     R5,A
+01A0 ED                MOV     A,R5
+01A1 2F                ADD     A,R7
+01A2 FF                MOV     R7,A
+01A3 EC                MOV     A,R4
+01A4 3E                ADDC    A,R6
+01A5 FE                MOV     R6,A
+01A6 D3                SETB    C
+01A7 EF                MOV     A,R7
+01A8 9492              SUBB    A,#092H
+01AA EE                MOV     A,R6
+01AB 9400              SUBB    A,#00H
+01AD 4012              JC      ?C0037
+                                           ; SOURCE LINE # 265
+01AF 900000      R     MOV     DPTR,#Errorflag
+01B2 7402              MOV     A,#02H
+01B4 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 266
+01B5 7B01              MOV     R3,#01H
+01B7 7A00        R     MOV     R2,#HIGH auimodbusrxarry
+01B9 7900        R     MOV     R1,#LOW auimodbusrxarry
+01BB 7D01              MOV     R5,#01H
+01BD 120000      R     LCALL   _Modbus_Error_Response
+                                           ; SOURCE LINE # 267
+01C0 22                RET     
+01C1         ?C0037:
+                                           ; SOURCE LINE # 269
+01C1 900000      R     MOV     DPTR,#Errorflag
+01C4 7402              MOV     A,#02H
+01C6 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 270
+01C7 7B01              MOV     R3,#01H
+01C9 7A00        R     MOV     R2,#HIGH auimodbusrxarry
+01CB 7900        R     MOV     R1,#LOW auimodbusrxarry
+01CD 7D01              MOV     R5,#01H
+01CF 120000      R     LCALL   _Modbus_Error_Response
+                                           ; SOURCE LINE # 271
+                                           ; SOURCE LINE # 273
+01D2 22                RET     
+01D3         ?C0035:
+01D3 900000      R     MOV     DPTR,#auimodbusrxarry+01H
+01D6 E0                MOVX    A,@DPTR
+01D7 FF                MOV     R7,A
+01D8 EF                MOV     A,R7
+01D9 B4031A            CJNE    A,#03H,?C0043
+                                           ; SOURCE LINE # 275
+01DC 900000      R     MOV     DPTR,#Twobyte1
+01DF E0                MOVX    A,@DPTR
+01E0 FE                MOV     R6,A
+01E1 A3                INC     DPTR
+01E2 E0                MOVX    A,@DPTR
+01E3 FF                MOV     R7,A
+01E4 900000      R     MOV     DPTR,#Twobyte2
+01E7 E0                MOVX    A,@DPTR
+01E8 FC                MOV     R4,A
+01E9 A3                INC     DPTR
+01EA E0                MOVX    A,@DPTR
+01EB FD                MOV     R5,A
+01EC 120000      R     LCALL   _Modbus_Response
+                                           ; SOURCE LINE # 276
+01EF 22                RET     
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 26  
+
+                                           ; SOURCE LINE # 277
+                                           ; SOURCE LINE # 280
+                                           ; SOURCE LINE # 281
+01F0         ?C0025:
+                                           ; SOURCE LINE # 283
+01F0 900000      R     MOV     DPTR,#Errorflag
+01F3 7403              MOV     A,#03H
+01F5 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 284
+                                           ; SOURCE LINE # 285
+                                           ; SOURCE LINE # 287
+01F6         ?C0043:
+01F6 22                RET     
+             ; FUNCTION Modbuslike_Process (END)
+
+             ; FUNCTION _Uint8_to_Uint16Conversion (BEGIN)
+                                           ; SOURCE LINE # 305
+0000 900000      R     MOV     DPTR,#firstindex
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+0005 900000      R     MOV     DPTR,#lastindex
+0008 ED                MOV     A,R5
+0009 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 309
+000A 900000      R     MOV     DPTR,#uint8to16conversionflag
+000D E0                MOVX    A,@DPTR
+000E FF                MOV     R7,A
+000F EF                MOV     A,R7
+0010 6401              XRL     A,#01H
+0012 6003              JZ      $ + 5H
+0014 020000      R     LJMP    ?C0044
+                                           ; SOURCE LINE # 311
+0017 900000      R     MOV     DPTR,#firstindex
+001A E0                MOVX    A,@DPTR
+001B FF                MOV     R7,A
+001C 900000      R     MOV     DPTR,#LoopCounterSerial
+001F EF                MOV     A,R7
+0020 F0                MOVX    @DPTR,A
+0021         ?C0045:
+0021 900000      R     MOV     DPTR,#lastindex
+0024 E0                MOVX    A,@DPTR
+0025 FF                MOV     R7,A
+0026 900000      R     MOV     DPTR,#LoopCounterSerial
+0029 E0                MOVX    A,@DPTR
+002A FE                MOV     R6,A
+002B EE                MOV     A,R6
+002C C3                CLR     C
+002D 9F                SUBB    A,R7
+002E 4003              JC      $ + 5H
+0030 020000      R     LJMP    ?C0048
+                                           ; SOURCE LINE # 313
+0033 900000      R     MOV     DPTR,#LoopCounterSerial
+0036 E0                MOVX    A,@DPTR
+0037 FF                MOV     R7,A
+0038 7400        R     MOV     A,#LOW auiuartrxarray
+003A 2F                ADD     A,R7
+003B F582              MOV     DPL,A
+003D E4                CLR     A
+003E 3400        R     ADDC    A,#HIGH auiuartrxarray
+0040 F583              MOV     DPH,A
+0042 E0                MOVX    A,@DPTR
+0043 FF                MOV     R7,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 27  
+
+0044 7E00              MOV     R6,#00H
+0046 900000      R     MOV     DPTR,#Hex2bytes
+0049 EE                MOV     A,R6
+004A F0                MOVX    @DPTR,A
+004B A3                INC     DPTR
+004C EF                MOV     A,R7
+004D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 314
+004E 900000      R     MOV     DPTR,#Hex2bytes
+0051 E0                MOVX    A,@DPTR
+0052 FE                MOV     R6,A
+0053 A3                INC     DPTR
+0054 E0                MOVX    A,@DPTR
+0055 FF                MOV     R7,A
+0056 EF                MOV     A,R7
+0057 7F00              MOV     R7,#00H
+0059 FE                MOV     R6,A
+005A 900000      R     MOV     DPTR,#Hex2bytes
+005D EE                MOV     A,R6
+005E F0                MOVX    @DPTR,A
+005F A3                INC     DPTR
+0060 EF                MOV     A,R7
+0061 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 315
+0062 900000      R     MOV     DPTR,#LoopCounterSerial
+0065 E0                MOVX    A,@DPTR
+0066 04                INC     A
+0067 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 316
+0068 900000      R     MOV     DPTR,#Hex2bytes
+006B E0                MOVX    A,@DPTR
+006C FE                MOV     R6,A
+006D A3                INC     DPTR
+006E E0                MOVX    A,@DPTR
+006F FF                MOV     R7,A
+0070 900000      R     MOV     DPTR,#LoopCounterSerial
+0073 E0                MOVX    A,@DPTR
+0074 FD                MOV     R5,A
+0075 7400        R     MOV     A,#LOW auiuartrxarray
+0077 2D                ADD     A,R5
+0078 F582              MOV     DPL,A
+007A E4                CLR     A
+007B 3400        R     ADDC    A,#HIGH auiuartrxarray
+007D F583              MOV     DPH,A
+007F E0                MOVX    A,@DPTR
+0080 FD                MOV     R5,A
+0081 7C00              MOV     R4,#00H
+0083 EE                MOV     A,R6
+0084 4C                ORL     A,R4
+0085 FE                MOV     R6,A
+0086 EF                MOV     A,R7
+0087 4D                ORL     A,R5
+0088 FF                MOV     R7,A
+0089 900000      R     MOV     DPTR,#Hex2bytes
+008C EE                MOV     A,R6
+008D F0                MOVX    @DPTR,A
+008E A3                INC     DPTR
+008F EF                MOV     A,R7
+0090 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 318
+0091 900000      R     MOV     DPTR,#LoopCounterSerial
+0094 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 28  
+
+0095 04                INC     A
+0096 F0                MOVX    @DPTR,A
+0097 8088              SJMP    ?C0045
+                                           ; SOURCE LINE # 319
+0099         ?C0044:
+0099 900000      R     MOV     DPTR,#uint8to16conversionflag
+009C E0                MOVX    A,@DPTR
+009D FF                MOV     R7,A
+009E EF                MOV     A,R7
+009F 6402              XRL     A,#02H
+00A1 707F              JNZ     ?C0048
+                                           ; SOURCE LINE # 321
+00A3 900000      R     MOV     DPTR,#firstindex
+00A6 E0                MOVX    A,@DPTR
+00A7 FF                MOV     R7,A
+00A8 900000      R     MOV     DPTR,#LoopCounterSerial
+00AB EF                MOV     A,R7
+00AC F0                MOVX    @DPTR,A
+00AD         ?C0050:
+00AD 900000      R     MOV     DPTR,#lastindex
+00B0 E0                MOVX    A,@DPTR
+00B1 FF                MOV     R7,A
+00B2 900000      R     MOV     DPTR,#LoopCounterSerial
+00B5 E0                MOVX    A,@DPTR
+00B6 FE                MOV     R6,A
+00B7 EE                MOV     A,R6
+00B8 C3                CLR     C
+00B9 9F                SUBB    A,R7
+00BA 5066              JNC     ?C0048
+                                           ; SOURCE LINE # 323
+00BC 900000      R     MOV     DPTR,#LoopCounterSerial
+00BF E0                MOVX    A,@DPTR
+00C0 FF                MOV     R7,A
+00C1 7400        R     MOV     A,#LOW auimodbusrxarry
+00C3 2F                ADD     A,R7
+00C4 F582              MOV     DPL,A
+00C6 E4                CLR     A
+00C7 3400        R     ADDC    A,#HIGH auimodbusrxarry
+00C9 F583              MOV     DPH,A
+00CB E0                MOVX    A,@DPTR
+00CC FF                MOV     R7,A
+00CD 7E00              MOV     R6,#00H
+00CF 900000      R     MOV     DPTR,#Hex2bytes
+00D2 EE                MOV     A,R6
+00D3 F0                MOVX    @DPTR,A
+00D4 A3                INC     DPTR
+00D5 EF                MOV     A,R7
+00D6 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 324
+00D7 900000      R     MOV     DPTR,#Hex2bytes
+00DA E0                MOVX    A,@DPTR
+00DB FE                MOV     R6,A
+00DC A3                INC     DPTR
+00DD E0                MOVX    A,@DPTR
+00DE FF                MOV     R7,A
+00DF EF                MOV     A,R7
+00E0 7F00              MOV     R7,#00H
+00E2 FE                MOV     R6,A
+00E3 900000      R     MOV     DPTR,#Hex2bytes
+00E6 EE                MOV     A,R6
+00E7 F0                MOVX    @DPTR,A
+00E8 A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 29  
+
+00E9 EF                MOV     A,R7
+00EA F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 325
+00EB 900000      R     MOV     DPTR,#LoopCounterSerial
+00EE E0                MOVX    A,@DPTR
+00EF 04                INC     A
+00F0 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 326
+00F1 900000      R     MOV     DPTR,#Hex2bytes
+00F4 E0                MOVX    A,@DPTR
+00F5 FE                MOV     R6,A
+00F6 A3                INC     DPTR
+00F7 E0                MOVX    A,@DPTR
+00F8 FF                MOV     R7,A
+00F9 900000      R     MOV     DPTR,#LoopCounterSerial
+00FC E0                MOVX    A,@DPTR
+00FD FD                MOV     R5,A
+00FE 7400        R     MOV     A,#LOW auimodbusrxarry
+0100 2D                ADD     A,R5
+0101 F582              MOV     DPL,A
+0103 E4                CLR     A
+0104 3400        R     ADDC    A,#HIGH auimodbusrxarry
+0106 F583              MOV     DPH,A
+0108 E0                MOVX    A,@DPTR
+0109 FD                MOV     R5,A
+010A 7C00              MOV     R4,#00H
+010C EE                MOV     A,R6
+010D 4C                ORL     A,R4
+010E FE                MOV     R6,A
+010F EF                MOV     A,R7
+0110 4D                ORL     A,R5
+0111 FF                MOV     R7,A
+0112 900000      R     MOV     DPTR,#Hex2bytes
+0115 EE                MOV     A,R6
+0116 F0                MOVX    @DPTR,A
+0117 A3                INC     DPTR
+0118 EF                MOV     A,R7
+0119 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 328
+011A 900000      R     MOV     DPTR,#LoopCounterSerial
+011D E0                MOVX    A,@DPTR
+011E 04                INC     A
+011F F0                MOVX    @DPTR,A
+0120 808B              SJMP    ?C0050
+                                           ; SOURCE LINE # 329
+0122         ?C0048:
+                                           ; SOURCE LINE # 331
+0122 900000      R     MOV     DPTR,#Hex2bytes
+0125 E0                MOVX    A,@DPTR
+0126 FE                MOV     R6,A
+0127 A3                INC     DPTR
+0128 E0                MOVX    A,@DPTR
+0129 FF                MOV     R7,A
+                                           ; SOURCE LINE # 332
+012A         ?C0053:
+012A 22                RET     
+             ; FUNCTION _Uint8_to_Uint16Conversion (END)
+
+             ; FUNCTION _Modbus_Error_Response (BEGIN)
+                                           ; SOURCE LINE # 349
+0000 900000      R     MOV     DPTR,#modbusarray
+0003 120000      E     LCALL   ?C?PSTXDATA
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 30  
+
+0006 900000      R     MOV     DPTR,#index
+0009 ED                MOV     A,R5
+000A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 353
+000B 900000      R     MOV     DPTR,#auiresponseerror
+000E 7411              MOV     A,#011H
+0010 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 355
+0011 900000      R     MOV     DPTR,#Errorflag
+0014 E0                MOVX    A,@DPTR
+0015 FF                MOV     R7,A
+0016 EF                MOV     A,R7
+0017 6401              XRL     A,#01H
+0019 706F              JNZ     ?C0054
+                                           ; SOURCE LINE # 357
+001B 900000      R     MOV     DPTR,#modbusarray
+001E 120000      E     LCALL   ?C?PLDXDATA
+0021 900000      R     MOV     DPTR,#index
+0024 E0                MOVX    A,@DPTR
+0025 FF                MOV     R7,A
+0026 E9                MOV     A,R1
+0027 2F                ADD     A,R7
+0028 F9                MOV     R1,A
+0029 E4                CLR     A
+002A 3A                ADDC    A,R2
+002B FA                MOV     R2,A
+002C 120000      E     LCALL   ?C?CLDPTR
+002F FF                MOV     R7,A
+0030 900000      R     MOV     DPTR,#Fucntioncodeerror
+0033 EF                MOV     A,R7
+0034 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 358
+0035 900000      R     MOV     DPTR,#Fucntioncodeerror
+0038 E0                MOVX    A,@DPTR
+0039 FF                MOV     R7,A
+003A EF                MOV     A,R7
+003B 4480              ORL     A,#080H
+003D FF                MOV     R7,A
+003E 900000      R     MOV     DPTR,#Fucntioncodeerror
+0041 EF                MOV     A,R7
+0042 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 359
+0043 900000      R     MOV     DPTR,#Fucntioncodeerror
+0046 E0                MOVX    A,@DPTR
+0047 FF                MOV     R7,A
+0048 900000      R     MOV     DPTR,#auiresponseerror+01H
+004B EF                MOV     A,R7
+004C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 360
+004D 900000      R     MOV     DPTR,#auiresponseerror+02H
+0050 7401              MOV     A,#01H
+0052 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 361
+0053 7B01              MOV     R3,#01H
+0055 7A00        R     MOV     R2,#HIGH auiresponseerror
+0057 7900        R     MOV     R1,#LOW auiresponseerror
+0059 7D03              MOV     R5,#03H
+005B 120000      R     LCALL   _CalculateCRC16
+005E 900000      R     MOV     DPTR,#CRC
+0061 EE                MOV     A,R6
+0062 F0                MOVX    @DPTR,A
+0063 A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 31  
+
+0064 EF                MOV     A,R7
+0065 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 362
+0066 900000      R     MOV     DPTR,#CRC
+0069 E0                MOVX    A,@DPTR
+006A FE                MOV     R6,A
+006B A3                INC     DPTR
+006C E0                MOVX    A,@DPTR
+006D FF                MOV     R7,A
+006E EE                MOV     A,R6
+006F FF                MOV     R7,A
+0070 7E00              MOV     R6,#00H
+0072 900000      R     MOV     DPTR,#auiresponseerror+03H
+0075 EF                MOV     A,R7
+0076 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 363
+0077 900000      R     MOV     DPTR,#CRC
+007A E0                MOVX    A,@DPTR
+007B FE                MOV     R6,A
+007C A3                INC     DPTR
+007D E0                MOVX    A,@DPTR
+007E FF                MOV     R7,A
+007F 900000      R     MOV     DPTR,#auiresponseerror+04H
+0082 EF                MOV     A,R7
+0083 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 364
+0084 7F01              MOV     R7,#01H
+0086 120000      R     LCALL   _Modbusresponse_Generation
+                                           ; SOURCE LINE # 366
+0089 22                RET     
+008A         ?C0054:
+008A 900000      R     MOV     DPTR,#Errorflag
+008D E0                MOVX    A,@DPTR
+008E FF                MOV     R7,A
+008F EF                MOV     A,R7
+0090 6402              XRL     A,#02H
+0092 706E              JNZ     ?C0057
+                                           ; SOURCE LINE # 368
+0094 900000      R     MOV     DPTR,#modbusarray
+0097 120000      E     LCALL   ?C?PLDXDATA
+009A 900000      R     MOV     DPTR,#index
+009D E0                MOVX    A,@DPTR
+009E FF                MOV     R7,A
+009F E9                MOV     A,R1
+00A0 2F                ADD     A,R7
+00A1 F9                MOV     R1,A
+00A2 E4                CLR     A
+00A3 3A                ADDC    A,R2
+00A4 FA                MOV     R2,A
+00A5 120000      E     LCALL   ?C?CLDPTR
+00A8 FF                MOV     R7,A
+00A9 900000      R     MOV     DPTR,#Fucntioncodeerror
+00AC EF                MOV     A,R7
+00AD F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 369
+00AE 900000      R     MOV     DPTR,#Fucntioncodeerror
+00B1 E0                MOVX    A,@DPTR
+00B2 FF                MOV     R7,A
+00B3 EF                MOV     A,R7
+00B4 4480              ORL     A,#080H
+00B6 FF                MOV     R7,A
+00B7 900000      R     MOV     DPTR,#Fucntioncodeerror
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 32  
+
+00BA EF                MOV     A,R7
+00BB F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 370
+00BC 900000      R     MOV     DPTR,#Fucntioncodeerror
+00BF E0                MOVX    A,@DPTR
+00C0 FF                MOV     R7,A
+00C1 900000      R     MOV     DPTR,#auiresponseerror+01H
+00C4 EF                MOV     A,R7
+00C5 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 371
+00C6 900000      R     MOV     DPTR,#auiresponseerror+02H
+00C9 7402              MOV     A,#02H
+00CB F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 372
+00CC 7B01              MOV     R3,#01H
+00CE 7A00        R     MOV     R2,#HIGH auiresponseerror
+00D0 7900        R     MOV     R1,#LOW auiresponseerror
+00D2 7D03              MOV     R5,#03H
+00D4 120000      R     LCALL   _CalculateCRC16
+00D7 900000      R     MOV     DPTR,#CRC
+00DA EE                MOV     A,R6
+00DB F0                MOVX    @DPTR,A
+00DC A3                INC     DPTR
+00DD EF                MOV     A,R7
+00DE F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 373
+00DF 900000      R     MOV     DPTR,#CRC
+00E2 E0                MOVX    A,@DPTR
+00E3 FE                MOV     R6,A
+00E4 A3                INC     DPTR
+00E5 E0                MOVX    A,@DPTR
+00E6 FF                MOV     R7,A
+00E7 EE                MOV     A,R6
+00E8 FF                MOV     R7,A
+00E9 7E00              MOV     R6,#00H
+00EB 900000      R     MOV     DPTR,#auiresponseerror+03H
+00EE EF                MOV     A,R7
+00EF F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 374
+00F0 900000      R     MOV     DPTR,#CRC
+00F3 E0                MOVX    A,@DPTR
+00F4 FE                MOV     R6,A
+00F5 A3                INC     DPTR
+00F6 E0                MOVX    A,@DPTR
+00F7 FF                MOV     R7,A
+00F8 900000      R     MOV     DPTR,#auiresponseerror+04H
+00FB EF                MOV     A,R7
+00FC F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 375
+00FD 7F01              MOV     R7,#01H
+00FF 120000      R     LCALL   _Modbusresponse_Generation
+                                           ; SOURCE LINE # 377
+                                           ; SOURCE LINE # 379
+0102         ?C0057:
+0102 22                RET     
+             ; FUNCTION _Modbus_Error_Response (END)
+
+             ; FUNCTION _Modbus_Single_Write (BEGIN)
+                                           ; SOURCE LINE # 397
+0000 900000      R     MOV     DPTR,#RegAdd
+0003 EE                MOV     A,R6
+0004 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 33  
+
+0005 A3                INC     DPTR
+0006 EF                MOV     A,R7
+0007 F0                MOVX    @DPTR,A
+0008 900000      R     MOV     DPTR,#value
+000B EC                MOV     A,R4
+000C F0                MOVX    @DPTR,A
+000D A3                INC     DPTR
+000E ED                MOV     A,R5
+000F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 399
+0010 900000      R     MOV     DPTR,#value
+0013 E0                MOVX    A,@DPTR
+0014 FC                MOV     R4,A
+0015 A3                INC     DPTR
+0016 E0                MOVX    A,@DPTR
+0017 FD                MOV     R5,A
+0018 900000      R     MOV     DPTR,#RegAdd
+001B E0                MOVX    A,@DPTR
+001C FE                MOV     R6,A
+001D A3                INC     DPTR
+001E E0                MOVX    A,@DPTR
+001F FF                MOV     R7,A
+0020 EF                MOV     A,R7
+0021 25E0              ADD     A,ACC
+0023 FF                MOV     R7,A
+0024 EE                MOV     A,R6
+0025 33                RLC     A
+0026 FE                MOV     R6,A
+0027 7400        E     MOV     A,#LOW auigreenduration+0FF38H
+0029 2F                ADD     A,R7
+002A F582              MOV     DPL,A
+002C 7400        E     MOV     A,#HIGH auigreenduration+0FF38H
+002E 3E                ADDC    A,R6
+002F F583              MOV     DPH,A
+0031 EC                MOV     A,R4
+0032 F0                MOVX    @DPTR,A
+0033 A3                INC     DPTR
+0034 ED                MOV     A,R5
+0035 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 400
+0036 900000      E     MOV     DPTR,#EEPROMWriteFlag
+0039 7402              MOV     A,#02H
+003B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 401
+003C 900000      R     MOV     DPTR,#RegAdd
+003F E0                MOVX    A,@DPTR
+0040 FE                MOV     R6,A
+0041 A3                INC     DPTR
+0042 E0                MOVX    A,@DPTR
+0043 FF                MOV     R7,A
+0044 EF                MOV     A,R7
+0045 249C              ADD     A,#09CH
+0047 FF                MOV     R7,A
+0048 EE                MOV     A,R6
+0049 34FF              ADDC    A,#0FFH
+004B FE                MOV     R6,A
+004C 120000      E     LCALL   _EEPROM_WriteFunction
+                                           ; SOURCE LINE # 403
+004F 900000      R     MOV     DPTR,#RegAdd
+0052 E0                MOVX    A,@DPTR
+0053 FE                MOV     R6,A
+0054 A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 34  
+
+0055 E0                MOVX    A,@DPTR
+0056 FF                MOV     R7,A
+0057 7DBC              MOV     R5,#0BCH
+0059 7C01              MOV     R4,#01H
+005B 120000      R     LCALL   _Modbus_Response
+                                           ; SOURCE LINE # 405
+005E 22                RET     
+             ; FUNCTION _Modbus_Single_Write (END)
+
+             ; FUNCTION Modbus_Multiple_Write (BEGIN)
+                                           ; SOURCE LINE # 423
+                                           ; SOURCE LINE # 427
+0000 22                RET     
+             ; FUNCTION Modbus_Multiple_Write (END)
+
+             ; FUNCTION _Modbus_Response (BEGIN)
+                                           ; SOURCE LINE # 444
+0000 900000      R     MOV     DPTR,#StartAddress
+0003 EE                MOV     A,R6
+0004 F0                MOVX    @DPTR,A
+0005 A3                INC     DPTR
+0006 EF                MOV     A,R7
+0007 F0                MOVX    @DPTR,A
+0008 900000      R     MOV     DPTR,#RegCount
+000B EC                MOV     A,R4
+000C F0                MOVX    @DPTR,A
+000D A3                INC     DPTR
+000E ED                MOV     A,R5
+000F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 446
+0010 900000      R     MOV     DPTR,#LoopCounter1
+0013 E4                CLR     A
+0014 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 447
+0015 900000      R     MOV     DPTR,#LoopCounter2
+0018 E4                CLR     A
+0019 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 448
+001A 900000      R     MOV     DPTR,#StartAddress
+001D E0                MOVX    A,@DPTR
+001E FE                MOV     R6,A
+001F A3                INC     DPTR
+0020 E0                MOVX    A,@DPTR
+0021 FF                MOV     R7,A
+0022 EF                MOV     A,R7
+0023 249C              ADD     A,#09CH
+0025 FF                MOV     R7,A
+0026 EE                MOV     A,R6
+0027 34FF              ADDC    A,#0FFH
+0029 FE                MOV     R6,A
+002A 900000      R     MOV     DPTR,#RegisterAddress
+002D EE                MOV     A,R6
+002E F0                MOVX    @DPTR,A
+002F A3                INC     DPTR
+0030 EF                MOV     A,R7
+0031 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 449
+0032 900000      R     MOV     DPTR,#index1
+0035 7403              MOV     A,#03H
+0037 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 450
+0038 900000      R     MOV     DPTR,#Responselenght
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 35  
+
+003B E4                CLR     A
+003C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 451
+003D 900000      R     MOV     DPTR,#CRC
+0040 E4                CLR     A
+0041 F0                MOVX    @DPTR,A
+0042 A3                INC     DPTR
+0043 E4                CLR     A
+0044 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 452
+0045 900000      R     MOV     DPTR,#auiresposearray
+0048 7411              MOV     A,#011H
+004A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 453
+004B 900000      R     MOV     DPTR,#RegCount
+004E E0                MOVX    A,@DPTR
+004F FE                MOV     R6,A
+0050 A3                INC     DPTR
+0051 E0                MOVX    A,@DPTR
+0052 FF                MOV     R7,A
+0053 EF                MOV     A,R7
+0054 64BC              XRL     A,#0BCH
+0056 7003              JNZ     ?C0115
+0058 EE                MOV     A,R6
+0059 6401              XRL     A,#01H
+005B         ?C0115:
+005B 6003              JZ      $ + 5H
+005D 020000      R     LJMP    ?C0060
+                                           ; SOURCE LINE # 454
+0060 900000      R     MOV     DPTR,#index1
+0063 7401              MOV     A,#01H
+0065 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 455
+0066 900000      R     MOV     DPTR,#RegisterAddress
+0069 E0                MOVX    A,@DPTR
+006A FE                MOV     R6,A
+006B A3                INC     DPTR
+006C E0                MOVX    A,@DPTR
+006D FF                MOV     R7,A
+006E C006              PUSH    AR6
+0070 C007              PUSH    AR7
+0072 900000      R     MOV     DPTR,#RegisterAddress
+0075 E0                MOVX    A,@DPTR
+0076 FE                MOV     R6,A
+0077 A3                INC     DPTR
+0078 E0                MOVX    A,@DPTR
+0079 FF                MOV     R7,A
+007A EF                MOV     A,R7
+007B 25E0              ADD     A,ACC
+007D FF                MOV     R7,A
+007E EE                MOV     A,R6
+007F 33                RLC     A
+0080 FE                MOV     R6,A
+0081 7400        E     MOV     A,#LOW auigreenduration
+0083 2F                ADD     A,R7
+0084 F582              MOV     DPL,A
+0086 7400        E     MOV     A,#HIGH auigreenduration
+0088 3E                ADDC    A,R6
+0089 F583              MOV     DPH,A
+008B E0                MOVX    A,@DPTR
+008C FC                MOV     R4,A
+008D A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 36  
+
+008E E0                MOVX    A,@DPTR
+008F FD                MOV     R5,A
+0090 D007              POP     AR7
+0092 D006              POP     AR6
+0094 120000      E     LCALL   _EEPROM_Read
+                                           ; SOURCE LINE # 456
+0097 900000      R     MOV     DPTR,#index1
+009A E0                MOVX    A,@DPTR
+009B FF                MOV     R7,A
+009C 04                INC     A
+009D F0                MOVX    @DPTR,A
+009E 7400        R     MOV     A,#LOW auiresposearray
+00A0 2F                ADD     A,R7
+00A1 F582              MOV     DPL,A
+00A3 E4                CLR     A
+00A4 3400        R     ADDC    A,#HIGH auiresposearray
+00A6 F583              MOV     DPH,A
+00A8 7406              MOV     A,#06H
+00AA F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 457
+00AB 900000      R     MOV     DPTR,#StartAddress
+00AE E0                MOVX    A,@DPTR
+00AF FE                MOV     R6,A
+00B0 A3                INC     DPTR
+00B1 E0                MOVX    A,@DPTR
+00B2 FF                MOV     R7,A
+00B3 EE                MOV     A,R6
+00B4 FF                MOV     R7,A
+00B5 7E00              MOV     R6,#00H
+00B7 900000      R     MOV     DPTR,#index1
+00BA E0                MOVX    A,@DPTR
+00BB FE                MOV     R6,A
+00BC 04                INC     A
+00BD F0                MOVX    @DPTR,A
+00BE 7400        R     MOV     A,#LOW auiresposearray
+00C0 2E                ADD     A,R6
+00C1 F582              MOV     DPL,A
+00C3 E4                CLR     A
+00C4 3400        R     ADDC    A,#HIGH auiresposearray
+00C6 F583              MOV     DPH,A
+00C8 EF                MOV     A,R7
+00C9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 458
+00CA 900000      R     MOV     DPTR,#StartAddress
+00CD E0                MOVX    A,@DPTR
+00CE FE                MOV     R6,A
+00CF A3                INC     DPTR
+00D0 E0                MOVX    A,@DPTR
+00D1 FF                MOV     R7,A
+00D2 900000      R     MOV     DPTR,#index1
+00D5 E0                MOVX    A,@DPTR
+00D6 FE                MOV     R6,A
+00D7 04                INC     A
+00D8 F0                MOVX    @DPTR,A
+00D9 7400        R     MOV     A,#LOW auiresposearray
+00DB 2E                ADD     A,R6
+00DC F582              MOV     DPL,A
+00DE E4                CLR     A
+00DF 3400        R     ADDC    A,#HIGH auiresposearray
+00E1 F583              MOV     DPH,A
+00E3 EF                MOV     A,R7
+00E4 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 37  
+
+                                           ; SOURCE LINE # 459
+00E5 900000      R     MOV     DPTR,#RegisterAddress
+00E8 E0                MOVX    A,@DPTR
+00E9 FE                MOV     R6,A
+00EA A3                INC     DPTR
+00EB E0                MOVX    A,@DPTR
+00EC FF                MOV     R7,A
+00ED EF                MOV     A,R7
+00EE 25E0              ADD     A,ACC
+00F0 FF                MOV     R7,A
+00F1 EE                MOV     A,R6
+00F2 33                RLC     A
+00F3 FE                MOV     R6,A
+00F4 7400        E     MOV     A,#LOW auigreenduration
+00F6 2F                ADD     A,R7
+00F7 F582              MOV     DPL,A
+00F9 7400        E     MOV     A,#HIGH auigreenduration
+00FB 3E                ADDC    A,R6
+00FC F583              MOV     DPH,A
+00FE E0                MOVX    A,@DPTR
+00FF FE                MOV     R6,A
+0100 A3                INC     DPTR
+0101 E0                MOVX    A,@DPTR
+0102 FF                MOV     R7,A
+0103 EE                MOV     A,R6
+0104 FF                MOV     R7,A
+0105 7E00              MOV     R6,#00H
+0107 900000      R     MOV     DPTR,#index1
+010A E0                MOVX    A,@DPTR
+010B FE                MOV     R6,A
+010C 04                INC     A
+010D F0                MOVX    @DPTR,A
+010E 7400        R     MOV     A,#LOW auiresposearray
+0110 2E                ADD     A,R6
+0111 F582              MOV     DPL,A
+0113 E4                CLR     A
+0114 3400        R     ADDC    A,#HIGH auiresposearray
+0116 F583              MOV     DPH,A
+0118 EF                MOV     A,R7
+0119 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 460
+011A 900000      R     MOV     DPTR,#RegisterAddress
+011D E0                MOVX    A,@DPTR
+011E FE                MOV     R6,A
+011F A3                INC     DPTR
+0120 E0                MOVX    A,@DPTR
+0121 FF                MOV     R7,A
+0122 EF                MOV     A,R7
+0123 25E0              ADD     A,ACC
+0125 FF                MOV     R7,A
+0126 EE                MOV     A,R6
+0127 33                RLC     A
+0128 FE                MOV     R6,A
+0129 7400        E     MOV     A,#LOW auigreenduration
+012B 2F                ADD     A,R7
+012C F582              MOV     DPL,A
+012E 7400        E     MOV     A,#HIGH auigreenduration
+0130 3E                ADDC    A,R6
+0131 F583              MOV     DPH,A
+0133 E0                MOVX    A,@DPTR
+0134 FE                MOV     R6,A
+0135 A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 38  
+
+0136 E0                MOVX    A,@DPTR
+0137 FF                MOV     R7,A
+0138 900000      R     MOV     DPTR,#index1
+013B E0                MOVX    A,@DPTR
+013C FE                MOV     R6,A
+013D 04                INC     A
+013E F0                MOVX    @DPTR,A
+013F 7400        R     MOV     A,#LOW auiresposearray
+0141 2E                ADD     A,R6
+0142 F582              MOV     DPL,A
+0144 E4                CLR     A
+0145 3400        R     ADDC    A,#HIGH auiresposearray
+0147 F583              MOV     DPH,A
+0149 EF                MOV     A,R7
+014A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 462
+014B 900000      R     MOV     DPTR,#Responselenght
+014E 7406              MOV     A,#06H
+0150 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 463
+0151 900000      R     MOV     DPTR,#Responselenght
+0154 E0                MOVX    A,@DPTR
+0155 FF                MOV     R7,A
+0156 900000      R     MOV     DPTR,#Bytecount
+0159 EF                MOV     A,R7
+015A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 464
+015B 7B01              MOV     R3,#01H
+015D 7A00        R     MOV     R2,#HIGH auiresposearray
+015F 7900        R     MOV     R1,#LOW auiresposearray
+0161 900000      R     MOV     DPTR,#Responselenght
+0164 E0                MOVX    A,@DPTR
+0165 FD                MOV     R5,A
+0166 120000      R     LCALL   _CalculateCRC16
+0169 900000      R     MOV     DPTR,#CRC
+016C EE                MOV     A,R6
+016D F0                MOVX    @DPTR,A
+016E A3                INC     DPTR
+016F EF                MOV     A,R7
+0170 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 465
+0171 900000      R     MOV     DPTR,#CRC
+0174 E0                MOVX    A,@DPTR
+0175 FE                MOV     R6,A
+0176 A3                INC     DPTR
+0177 E0                MOVX    A,@DPTR
+0178 FF                MOV     R7,A
+0179 EE                MOV     A,R6
+017A FF                MOV     R7,A
+017B 7E00              MOV     R6,#00H
+017D 900000      R     MOV     DPTR,#index1
+0180 E0                MOVX    A,@DPTR
+0181 FE                MOV     R6,A
+0182 04                INC     A
+0183 F0                MOVX    @DPTR,A
+0184 7400        R     MOV     A,#LOW auiresposearray
+0186 2E                ADD     A,R6
+0187 F582              MOV     DPL,A
+0189 E4                CLR     A
+018A 3400        R     ADDC    A,#HIGH auiresposearray
+018C F583              MOV     DPH,A
+018E EF                MOV     A,R7
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 39  
+
+018F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 466
+0190 900000      R     MOV     DPTR,#CRC
+0193 E0                MOVX    A,@DPTR
+0194 FE                MOV     R6,A
+0195 A3                INC     DPTR
+0196 E0                MOVX    A,@DPTR
+0197 FF                MOV     R7,A
+0198 900000      R     MOV     DPTR,#index1
+019B E0                MOVX    A,@DPTR
+019C FE                MOV     R6,A
+019D 04                INC     A
+019E F0                MOVX    @DPTR,A
+019F 7400        R     MOV     A,#LOW auiresposearray
+01A1 2E                ADD     A,R6
+01A2 F582              MOV     DPL,A
+01A4 E4                CLR     A
+01A5 3400        R     ADDC    A,#HIGH auiresposearray
+01A7 F583              MOV     DPH,A
+01A9 EF                MOV     A,R7
+01AA F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 469
+01AB 900000      R     MOV     DPTR,#index1
+01AE E0                MOVX    A,@DPTR
+01AF FF                MOV     R7,A
+01B0 EF                MOV     A,R7
+01B1 04                INC     A
+01B2 FF                MOV     R7,A
+01B3 900000      R     MOV     DPTR,#LoopCounter2
+01B6 EF                MOV     A,R7
+01B7 F0                MOVX    @DPTR,A
+01B8         ?C0061:
+01B8 900000      R     MOV     DPTR,#LoopCounter2
+01BB E0                MOVX    A,@DPTR
+01BC FF                MOV     R7,A
+01BD EF                MOV     A,R7
+01BE C3                CLR     C
+01BF 9461              SUBB    A,#061H
+01C1 5036              JNC     ?C0062
+                                           ; SOURCE LINE # 471
+01C3 900000      R     MOV     DPTR,#index1
+01C6 E0                MOVX    A,@DPTR
+01C7 FF                MOV     R7,A
+01C8 7400        R     MOV     A,#LOW auiresposearray
+01CA 2F                ADD     A,R7
+01CB F582              MOV     DPL,A
+01CD E4                CLR     A
+01CE 3400        R     ADDC    A,#HIGH auiresposearray
+01D0 F583              MOV     DPH,A
+01D2 E4                CLR     A
+01D3 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 472
+01D4 900000      R     MOV     DPTR,#index1
+01D7 E0                MOVX    A,@DPTR
+01D8 04                INC     A
+01D9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 473
+01DA 900000      R     MOV     DPTR,#index1
+01DD E0                MOVX    A,@DPTR
+01DE FF                MOV     R7,A
+01DF 7400        R     MOV     A,#LOW auiresposearray
+01E1 2F                ADD     A,R7
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 40  
+
+01E2 F582              MOV     DPL,A
+01E4 E4                CLR     A
+01E5 3400        R     ADDC    A,#HIGH auiresposearray
+01E7 F583              MOV     DPH,A
+01E9 E4                CLR     A
+01EA F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 474
+01EB 900000      R     MOV     DPTR,#index1
+01EE E0                MOVX    A,@DPTR
+01EF 04                INC     A
+01F0 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 475
+01F1 900000      R     MOV     DPTR,#LoopCounter2
+01F4 E0                MOVX    A,@DPTR
+01F5 04                INC     A
+01F6 F0                MOVX    @DPTR,A
+01F7 80BF              SJMP    ?C0061
+01F9         ?C0062:
+                                           ; SOURCE LINE # 477
+01F9 7F03              MOV     R7,#03H
+01FB 120000      R     LCALL   _Modbusresponse_Generation
+                                           ; SOURCE LINE # 479
+01FE 22                RET     
+01FF         ?C0060:
+01FF 900000      R     MOV     DPTR,#RegCount
+0202 E0                MOVX    A,@DPTR
+0203 FE                MOV     R6,A
+0204 A3                INC     DPTR
+0205 E0                MOVX    A,@DPTR
+0206 FF                MOV     R7,A
+0207 EF                MOV     A,R7
+0208 B4BD18            CJNE    A,#0BDH,?C0065
+020B EE                MOV     A,R6
+020C B40114            CJNE    A,#01H,?C0065
+                                           ; SOURCE LINE # 481
+020F 900000      R     MOV     DPTR,#auiresposearray+01H
+0212 7410              MOV     A,#010H
+0214 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 482
+0215 900000      R     MOV     DPTR,#RegisterAddress
+0218 E0                MOVX    A,@DPTR
+0219 FE                MOV     R6,A
+021A A3                INC     DPTR
+021B E0                MOVX    A,@DPTR
+021C FF                MOV     R7,A
+021D 900000      R     MOV     DPTR,#auiresposearray+02H
+0220 EF                MOV     A,R7
+0221 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 483
+0222 22                RET     
+0223         ?C0065:
+                                           ; SOURCE LINE # 484
+0223 900000      R     MOV     DPTR,#RegisterAddress
+0226 E0                MOVX    A,@DPTR
+0227 FE                MOV     R6,A
+0228 A3                INC     DPTR
+0229 E0                MOVX    A,@DPTR
+022A FF                MOV     R7,A
+022B 900000      R     MOV     DPTR,#RegCount
+022E E0                MOVX    A,@DPTR
+022F FC                MOV     R4,A
+0230 A3                INC     DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 41  
+
+0231 E0                MOVX    A,@DPTR
+0232 FD                MOV     R5,A
+0233 120000      E     LCALL   _EEPROM_Read
+                                           ; SOURCE LINE # 486
+0236 900000      R     MOV     DPTR,#auiresposearray+01H
+0239 7403              MOV     A,#03H
+023B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 487
+023C 900000      R     MOV     DPTR,#RegCount
+023F E0                MOVX    A,@DPTR
+0240 FE                MOV     R6,A
+0241 A3                INC     DPTR
+0242 E0                MOVX    A,@DPTR
+0243 FF                MOV     R7,A
+0244 EF                MOV     A,R7
+0245 25E0              ADD     A,ACC
+0247 FF                MOV     R7,A
+0248 900000      R     MOV     DPTR,#auiresposearray+02H
+024B EF                MOV     A,R7
+024C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 488
+024D 900000      R     MOV     DPTR,#RegisterAddress
+0250 E0                MOVX    A,@DPTR
+0251 FE                MOV     R6,A
+0252 A3                INC     DPTR
+0253 E0                MOVX    A,@DPTR
+0254 FF                MOV     R7,A
+0255 900000      R     MOV     DPTR,#LoopCounter1
+0258 EF                MOV     A,R7
+0259 F0                MOVX    @DPTR,A
+025A         ?C0067:
+025A 900000      R     MOV     DPTR,#RegCount
+025D E0                MOVX    A,@DPTR
+025E FE                MOV     R6,A
+025F A3                INC     DPTR
+0260 E0                MOVX    A,@DPTR
+0261 FF                MOV     R7,A
+0262 900000      R     MOV     DPTR,#RegisterAddress
+0265 E0                MOVX    A,@DPTR
+0266 FC                MOV     R4,A
+0267 A3                INC     DPTR
+0268 E0                MOVX    A,@DPTR
+0269 FD                MOV     R5,A
+026A ED                MOV     A,R5
+026B 2F                ADD     A,R7
+026C FF                MOV     R7,A
+026D EC                MOV     A,R4
+026E 3E                ADDC    A,R6
+026F FE                MOV     R6,A
+0270 900000      R     MOV     DPTR,#LoopCounter1
+0273 E0                MOVX    A,@DPTR
+0274 FD                MOV     R5,A
+0275 7C00              MOV     R4,#00H
+0277 C3                CLR     C
+0278 ED                MOV     A,R5
+0279 9F                SUBB    A,R7
+027A EC                MOV     A,R4
+027B 9E                SUBB    A,R6
+027C 5063              JNC     ?C0068
+                                           ; SOURCE LINE # 490
+027E 900000      R     MOV     DPTR,#LoopCounter1
+0281 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 42  
+
+0282 FF                MOV     R7,A
+0283 75F002            MOV     B,#02H
+0286 EF                MOV     A,R7
+0287 900000      E     MOV     DPTR,#auigreenduration
+028A 120000      E     LCALL   ?C?OFFXADD
+028D E0                MOVX    A,@DPTR
+028E FE                MOV     R6,A
+028F A3                INC     DPTR
+0290 E0                MOVX    A,@DPTR
+0291 FF                MOV     R7,A
+0292 EE                MOV     A,R6
+0293 FF                MOV     R7,A
+0294 7E00              MOV     R6,#00H
+0296 900000      R     MOV     DPTR,#index1
+0299 E0                MOVX    A,@DPTR
+029A FE                MOV     R6,A
+029B 7400        R     MOV     A,#LOW auiresposearray
+029D 2E                ADD     A,R6
+029E F582              MOV     DPL,A
+02A0 E4                CLR     A
+02A1 3400        R     ADDC    A,#HIGH auiresposearray
+02A3 F583              MOV     DPH,A
+02A5 EF                MOV     A,R7
+02A6 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 491
+02A7 900000      R     MOV     DPTR,#index1
+02AA E0                MOVX    A,@DPTR
+02AB 04                INC     A
+02AC F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 492
+02AD 900000      R     MOV     DPTR,#LoopCounter1
+02B0 E0                MOVX    A,@DPTR
+02B1 FF                MOV     R7,A
+02B2 75F002            MOV     B,#02H
+02B5 EF                MOV     A,R7
+02B6 900000      E     MOV     DPTR,#auigreenduration
+02B9 120000      E     LCALL   ?C?OFFXADD
+02BC E0                MOVX    A,@DPTR
+02BD FE                MOV     R6,A
+02BE A3                INC     DPTR
+02BF E0                MOVX    A,@DPTR
+02C0 FF                MOV     R7,A
+02C1 900000      R     MOV     DPTR,#index1
+02C4 E0                MOVX    A,@DPTR
+02C5 FE                MOV     R6,A
+02C6 7400        R     MOV     A,#LOW auiresposearray
+02C8 2E                ADD     A,R6
+02C9 F582              MOV     DPL,A
+02CB E4                CLR     A
+02CC 3400        R     ADDC    A,#HIGH auiresposearray
+02CE F583              MOV     DPH,A
+02D0 EF                MOV     A,R7
+02D1 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 493
+02D2 900000      R     MOV     DPTR,#index1
+02D5 E0                MOVX    A,@DPTR
+02D6 04                INC     A
+02D7 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 494
+02D8 900000      R     MOV     DPTR,#LoopCounter1
+02DB E0                MOVX    A,@DPTR
+02DC 04                INC     A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 43  
+
+02DD F0                MOVX    @DPTR,A
+02DE 020000      R     LJMP    ?C0067
+02E1         ?C0068:
+                                           ; SOURCE LINE # 495
+02E1 900000      R     MOV     DPTR,#RegCount
+02E4 E0                MOVX    A,@DPTR
+02E5 FE                MOV     R6,A
+02E6 A3                INC     DPTR
+02E7 E0                MOVX    A,@DPTR
+02E8 FF                MOV     R7,A
+02E9 EF                MOV     A,R7
+02EA 25E0              ADD     A,ACC
+02EC FF                MOV     R7,A
+02ED EF                MOV     A,R7
+02EE 2403              ADD     A,#03H
+02F0 FF                MOV     R7,A
+02F1 900000      R     MOV     DPTR,#Responselenght
+02F4 EF                MOV     A,R7
+02F5 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 496
+02F6 900000      R     MOV     DPTR,#Responselenght
+02F9 E0                MOVX    A,@DPTR
+02FA FF                MOV     R7,A
+02FB 900000      R     MOV     DPTR,#Bytecount
+02FE EF                MOV     A,R7
+02FF F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 497
+0300 7B01              MOV     R3,#01H
+0302 7A00        R     MOV     R2,#HIGH auiresposearray
+0304 7900        R     MOV     R1,#LOW auiresposearray
+0306 900000      R     MOV     DPTR,#Responselenght
+0309 E0                MOVX    A,@DPTR
+030A FD                MOV     R5,A
+030B 120000      R     LCALL   _CalculateCRC16
+030E 900000      R     MOV     DPTR,#CRC
+0311 EE                MOV     A,R6
+0312 F0                MOVX    @DPTR,A
+0313 A3                INC     DPTR
+0314 EF                MOV     A,R7
+0315 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 498
+0316 900000      R     MOV     DPTR,#CRC
+0319 E0                MOVX    A,@DPTR
+031A FE                MOV     R6,A
+031B A3                INC     DPTR
+031C E0                MOVX    A,@DPTR
+031D FF                MOV     R7,A
+031E EE                MOV     A,R6
+031F FF                MOV     R7,A
+0320 7E00              MOV     R6,#00H
+0322 900000      R     MOV     DPTR,#index1
+0325 E0                MOVX    A,@DPTR
+0326 FE                MOV     R6,A
+0327 7400        R     MOV     A,#LOW auiresposearray
+0329 2E                ADD     A,R6
+032A F582              MOV     DPL,A
+032C E4                CLR     A
+032D 3400        R     ADDC    A,#HIGH auiresposearray
+032F F583              MOV     DPH,A
+0331 EF                MOV     A,R7
+0332 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 499
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 44  
+
+0333 900000      R     MOV     DPTR,#index1
+0336 E0                MOVX    A,@DPTR
+0337 04                INC     A
+0338 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 500
+0339 900000      R     MOV     DPTR,#CRC
+033C E0                MOVX    A,@DPTR
+033D FE                MOV     R6,A
+033E A3                INC     DPTR
+033F E0                MOVX    A,@DPTR
+0340 FF                MOV     R7,A
+0341 900000      R     MOV     DPTR,#index1
+0344 E0                MOVX    A,@DPTR
+0345 FE                MOV     R6,A
+0346 7400        R     MOV     A,#LOW auiresposearray
+0348 2E                ADD     A,R6
+0349 F582              MOV     DPL,A
+034B E4                CLR     A
+034C 3400        R     ADDC    A,#HIGH auiresposearray
+034E F583              MOV     DPH,A
+0350 EF                MOV     A,R7
+0351 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 501
+0352 900000      R     MOV     DPTR,#index1
+0355 E0                MOVX    A,@DPTR
+0356 04                INC     A
+0357 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 503
+0358 900000      R     MOV     DPTR,#index1
+035B E0                MOVX    A,@DPTR
+035C FF                MOV     R7,A
+035D 900000      R     MOV     DPTR,#LoopCounter2
+0360 EF                MOV     A,R7
+0361 F0                MOVX    @DPTR,A
+0362         ?C0070:
+0362 900000      R     MOV     DPTR,#LoopCounter2
+0365 E0                MOVX    A,@DPTR
+0366 FF                MOV     R7,A
+0367 EF                MOV     A,R7
+0368 C3                CLR     C
+0369 9461              SUBB    A,#061H
+036B 5036              JNC     ?C0071
+                                           ; SOURCE LINE # 507
+036D 900000      R     MOV     DPTR,#index1
+0370 E0                MOVX    A,@DPTR
+0371 FF                MOV     R7,A
+0372 7400        R     MOV     A,#LOW auiresposearray
+0374 2F                ADD     A,R7
+0375 F582              MOV     DPL,A
+0377 E4                CLR     A
+0378 3400        R     ADDC    A,#HIGH auiresposearray
+037A F583              MOV     DPH,A
+037C E4                CLR     A
+037D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 508
+037E 900000      R     MOV     DPTR,#index1
+0381 E0                MOVX    A,@DPTR
+0382 04                INC     A
+0383 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 509
+0384 900000      R     MOV     DPTR,#index1
+0387 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 45  
+
+0388 FF                MOV     R7,A
+0389 7400        R     MOV     A,#LOW auiresposearray
+038B 2F                ADD     A,R7
+038C F582              MOV     DPL,A
+038E E4                CLR     A
+038F 3400        R     ADDC    A,#HIGH auiresposearray
+0391 F583              MOV     DPH,A
+0393 E4                CLR     A
+0394 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 510
+0395 900000      R     MOV     DPTR,#index1
+0398 E0                MOVX    A,@DPTR
+0399 04                INC     A
+039A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 511
+039B 900000      R     MOV     DPTR,#LoopCounter2
+039E E0                MOVX    A,@DPTR
+039F 04                INC     A
+03A0 F0                MOVX    @DPTR,A
+03A1 80BF              SJMP    ?C0070
+03A3         ?C0071:
+                                           ; SOURCE LINE # 513
+03A3 7F02              MOV     R7,#02H
+03A5 120000      R     LCALL   _Modbusresponse_Generation
+                                           ; SOURCE LINE # 514
+                                           ; SOURCE LINE # 516
+03A8         ?C0073:
+03A8 22                RET     
+             ; FUNCTION _Modbus_Response (END)
+
+             ; FUNCTION _Modbusresponse_Generation (BEGIN)
+                                           ; SOURCE LINE # 534
+0000 900000      R     MOV     DPTR,#Responseflag
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 536
+0005 900000      R     MOV     DPTR,#index
+0008 741D              MOV     A,#01DH
+000A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 538
+000B 900000      R     MOV     DPTR,#Responseflag
+000E E0                MOVX    A,@DPTR
+000F FF                MOV     R7,A
+0010 EF                MOV     A,R7
+0011 6401              XRL     A,#01H
+0013 7054              JNZ     ?C0074
+                                           ; SOURCE LINE # 539
+0015 900000      R     MOV     DPTR,#Bytecount
+0018 7403              MOV     A,#03H
+001A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 540
+001B 120000      R     LCALL   UART_TxDefault_Values
+                                           ; SOURCE LINE # 541
+001E 900000      R     MOV     DPTR,#LoopCounterSerial
+0021 E4                CLR     A
+0022 F0                MOVX    @DPTR,A
+0023 A3                INC     DPTR
+0024 E4                CLR     A
+0025 F0                MOVX    @DPTR,A
+0026         ?C0075:
+0026 900000      R     MOV     DPTR,#LoopCounterSerial
+0029 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 46  
+
+002A FE                MOV     R6,A
+002B A3                INC     DPTR
+002C E0                MOVX    A,@DPTR
+002D FF                MOV     R7,A
+002E C3                CLR     C
+002F EF                MOV     A,R7
+0030 9405              SUBB    A,#05H
+0032 EE                MOV     A,R6
+0033 9400              SUBB    A,#00H
+0035 4003              JC      $ + 5H
+0037 020000      R     LJMP    ?C0078
+                                           ; SOURCE LINE # 543
+003A 900000      R     MOV     DPTR,#LoopCounterSerial
+003D E0                MOVX    A,@DPTR
+003E FE                MOV     R6,A
+003F A3                INC     DPTR
+0040 E0                MOVX    A,@DPTR
+0041 FF                MOV     R7,A
+0042 7400        R     MOV     A,#LOW auiresponseerror
+0044 2F                ADD     A,R7
+0045 F582              MOV     DPL,A
+0047 7400        R     MOV     A,#HIGH auiresponseerror
+0049 3E                ADDC    A,R6
+004A F583              MOV     DPH,A
+004C E0                MOVX    A,@DPTR
+004D FF                MOV     R7,A
+004E 900000      R     MOV     DPTR,#index
+0051 E0                MOVX    A,@DPTR
+0052 FD                MOV     R5,A
+0053 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 544
+0056 900000      R     MOV     DPTR,#index
+0059 E0                MOVX    A,@DPTR
+005A 2402              ADD     A,#02H
+005C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 546
+005D 900000      R     MOV     DPTR,#LoopCounterSerial
+0060 E4                CLR     A
+0061 75F001            MOV     B,#01H
+0064 120000      E     LCALL   ?C?IILDX
+0067 80BD              SJMP    ?C0075
+                                           ; SOURCE LINE # 548
+0069         ?C0074:
+0069 900000      R     MOV     DPTR,#Responseflag
+006C E0                MOVX    A,@DPTR
+006D FF                MOV     R7,A
+006E EF                MOV     A,R7
+006F 6402              XRL     A,#02H
+0071 600A              JZ      ?C0080
+0073 900000      R     MOV     DPTR,#Responseflag
+0076 E0                MOVX    A,@DPTR
+0077 FF                MOV     R7,A
+0078 EF                MOV     A,R7
+0079 6403              XRL     A,#03H
+007B 704B              JNZ     ?C0078
+007D         ?C0080:
+                                           ; SOURCE LINE # 550
+007D 120000      R     LCALL   UART_TxDefault_Values
+                                           ; SOURCE LINE # 551
+0080 900000      R     MOV     DPTR,#LoopCounterSerial
+0083 E4                CLR     A
+0084 F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 47  
+
+0085 A3                INC     DPTR
+0086 E4                CLR     A
+0087 F0                MOVX    @DPTR,A
+0088         ?C0081:
+0088 900000      R     MOV     DPTR,#LoopCounterSerial
+008B E0                MOVX    A,@DPTR
+008C FE                MOV     R6,A
+008D A3                INC     DPTR
+008E E0                MOVX    A,@DPTR
+008F FF                MOV     R7,A
+0090 C3                CLR     C
+0091 EF                MOV     A,R7
+0092 9461              SUBB    A,#061H
+0094 EE                MOV     A,R6
+0095 9400              SUBB    A,#00H
+0097 502F              JNC     ?C0078
+                                           ; SOURCE LINE # 553
+0099 900000      R     MOV     DPTR,#LoopCounterSerial
+009C E0                MOVX    A,@DPTR
+009D FE                MOV     R6,A
+009E A3                INC     DPTR
+009F E0                MOVX    A,@DPTR
+00A0 FF                MOV     R7,A
+00A1 7400        R     MOV     A,#LOW auiresposearray
+00A3 2F                ADD     A,R7
+00A4 F582              MOV     DPL,A
+00A6 7400        R     MOV     A,#HIGH auiresposearray
+00A8 3E                ADDC    A,R6
+00A9 F583              MOV     DPH,A
+00AB E0                MOVX    A,@DPTR
+00AC FF                MOV     R7,A
+00AD 900000      R     MOV     DPTR,#index
+00B0 E0                MOVX    A,@DPTR
+00B1 FD                MOV     R5,A
+00B2 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 554
+00B5 900000      R     MOV     DPTR,#index
+00B8 E0                MOVX    A,@DPTR
+00B9 2402              ADD     A,#02H
+00BB F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 556
+00BC 900000      R     MOV     DPTR,#LoopCounterSerial
+00BF E4                CLR     A
+00C0 75F001            MOV     B,#01H
+00C3 120000      E     LCALL   ?C?IILDX
+00C6 80C0              SJMP    ?C0081
+                                           ; SOURCE LINE # 558
+00C8         ?C0078:
+                                           ; SOURCE LINE # 560
+00C8 900000      R     MOV     DPTR,#Responseflag
+00CB E0                MOVX    A,@DPTR
+00CC FF                MOV     R7,A
+00CD EF                MOV     A,R7
+00CE B4010B            CJNE    A,#01H,?C0084
+                                           ; SOURCE LINE # 562
+00D1 900000      R     MOV     DPTR,#LoopCounterSerial
+00D4 E4                CLR     A
+00D5 F0                MOVX    @DPTR,A
+00D6 A3                INC     DPTR
+00D7 7427              MOV     A,#027H
+00D9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 564
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 48  
+
+00DA 8012              SJMP    ?C0087
+00DC         ?C0084:
+00DC 900000      R     MOV     DPTR,#Responseflag
+00DF E0                MOVX    A,@DPTR
+00E0 FF                MOV     R7,A
+00E1 EF                MOV     A,R7
+00E2 B40209            CJNE    A,#02H,?C0087
+                                           ; SOURCE LINE # 566
+00E5 900000      R     MOV     DPTR,#LoopCounterSerial
+00E8 E4                CLR     A
+00E9 F0                MOVX    @DPTR,A
+00EA A3                INC     DPTR
+00EB 74DF              MOV     A,#0DFH
+00ED F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 567
+                                           ; SOURCE LINE # 570
+00EE         ?C0087:
+00EE 900000      R     MOV     DPTR,#LoopCounterSerial
+00F1 E0                MOVX    A,@DPTR
+00F2 FE                MOV     R6,A
+00F3 A3                INC     DPTR
+00F4 E0                MOVX    A,@DPTR
+00F5 FF                MOV     R7,A
+00F6 C3                CLR     C
+00F7 EF                MOV     A,R7
+00F8 942C              SUBB    A,#02CH
+00FA EE                MOV     A,R6
+00FB 9401              SUBB    A,#01H
+00FD 5048              JNC     ?C0088
+                                           ; SOURCE LINE # 572
+00FF 900000      R     MOV     DPTR,#LoopCounterSerial
+0102 E0                MOVX    A,@DPTR
+0103 FE                MOV     R6,A
+0104 A3                INC     DPTR
+0105 E0                MOVX    A,@DPTR
+0106 FF                MOV     R7,A
+0107 EF                MOV     A,R7
+0108 B42B1B            CJNE    A,#02BH,?C0090
+010B EE                MOV     A,R6
+010C B40117            CJNE    A,#01H,?C0090
+                                           ; SOURCE LINE # 574
+010F 900000      R     MOV     DPTR,#LoopCounterSerial
+0112 E0                MOVX    A,@DPTR
+0113 FE                MOV     R6,A
+0114 A3                INC     DPTR
+0115 E0                MOVX    A,@DPTR
+0116 FF                MOV     R7,A
+0117 7400        R     MOV     A,#LOW acuarttxbuffer
+0119 2F                ADD     A,R7
+011A F582              MOV     DPL,A
+011C 7400        R     MOV     A,#HIGH acuarttxbuffer
+011E 3E                ADDC    A,R6
+011F F583              MOV     DPH,A
+0121 7423              MOV     A,#023H
+0123 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 576
+0124 8015              SJMP    ?C0089
+0126         ?C0090:
+                                           ; SOURCE LINE # 577
+                                           ; SOURCE LINE # 579
+0126 900000      R     MOV     DPTR,#LoopCounterSerial
+0129 E0                MOVX    A,@DPTR
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 49  
+
+012A FE                MOV     R6,A
+012B A3                INC     DPTR
+012C E0                MOVX    A,@DPTR
+012D FF                MOV     R7,A
+012E 7400        R     MOV     A,#LOW acuarttxbuffer
+0130 2F                ADD     A,R7
+0131 F582              MOV     DPL,A
+0133 7400        R     MOV     A,#HIGH acuarttxbuffer
+0135 3E                ADDC    A,R6
+0136 F583              MOV     DPH,A
+0138 7430              MOV     A,#030H
+013A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 581
+                                           ; SOURCE LINE # 582
+013B         ?C0089:
+013B 900000      R     MOV     DPTR,#LoopCounterSerial
+013E E4                CLR     A
+013F 75F001            MOV     B,#01H
+0142 120000      E     LCALL   ?C?IILDX
+0145 80A7              SJMP    ?C0087
+0147         ?C0088:
+                                           ; SOURCE LINE # 584
+0147 7B01              MOV     R3,#01H
+0149 7A00        R     MOV     R2,#HIGH acuarttxbuffer
+014B 7900        R     MOV     R1,#LOW acuarttxbuffer
+014D 7D2C              MOV     R5,#02CH
+014F 7C01              MOV     R4,#01H
+0151 120000      R     LCALL   _UART_TxOperation
+                                           ; SOURCE LINE # 586
+0154 22                RET     
+             ; FUNCTION _Modbusresponse_Generation (END)
+
+             ; FUNCTION UART_TxDefault_Values (BEGIN)
+                                           ; SOURCE LINE # 604
+                                           ; SOURCE LINE # 606
+0000 900000      R     MOV     DPTR,#acuarttxbuffer
+0003 7424              MOV     A,#024H
+0005 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 608
+0006 7D01              MOV     R5,#01H
+0008 7F00              MOV     R7,#00H
+000A 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 609
+000D 7D03              MOV     R5,#03H
+000F 7F01              MOV     R7,#01H
+0011 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 610
+0014 7D05              MOV     R5,#05H
+0016 7F03              MOV     R7,#03H
+0018 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 611
+001B 900000      R     MOV     DPTR,#acuarttxbuffer+07H
+001E 742C              MOV     A,#02CH
+0020 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 612
+0021 7D08              MOV     R5,#08H
+0023 7F01              MOV     R7,#01H
+0025 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 613
+0028 7D0A              MOV     R5,#0AH
+002A 7F04              MOV     R7,#04H
+002C 120000      R     LCALL   _ASCII_Conversion
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 50  
+
+                                           ; SOURCE LINE # 614
+002F 7D0C              MOV     R5,#0CH
+0031 7F00              MOV     R7,#00H
+0033 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 615
+0036 7D0E              MOV     R5,#0EH
+0038 7F01              MOV     R7,#01H
+003A 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 616
+003D 7D10              MOV     R5,#010H
+003F 7F2C              MOV     R7,#02CH
+0041 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 617
+0044 7D12              MOV     R5,#012H
+0046 7F03              MOV     R7,#03H
+0048 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 618
+004B 7D14              MOV     R5,#014H
+004D 7F00              MOV     R7,#00H
+004F 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 619
+0052 7D16              MOV     R5,#016H
+0054 7F00              MOV     R7,#00H
+0056 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 620
+0059 7D18              MOV     R5,#018H
+005B 7F00              MOV     R7,#00H
+005D 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 621
+0060 900000      R     MOV     DPTR,#acuarttxbuffer+01AH
+0063 742C              MOV     A,#02CH
+0065 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 622
+0066 900000      R     MOV     DPTR,#Bytecount
+0069 E0                MOVX    A,@DPTR
+006A FF                MOV     R7,A
+006B 7D1B              MOV     R5,#01BH
+006D 120000      R     LCALL   _ASCII_Conversion
+                                           ; SOURCE LINE # 625
+0070 22                RET     
+             ; FUNCTION UART_TxDefault_Values (END)
+
+             ; FUNCTION _ASCII_Conversion (BEGIN)
+                                           ; SOURCE LINE # 643
+0000 900000      R     MOV     DPTR,#hexbytevalue
+0003 EF                MOV     A,R7
+0004 F0                MOVX    @DPTR,A
+0005 900000      R     MOV     DPTR,#index
+0008 ED                MOV     A,R5
+0009 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 647
+000A 7B01              MOV     R3,#01H
+000C 7A00        R     MOV     R2,#HIGH CharecterValue
+000E 7900        R     MOV     R1,#LOW CharecterValue
+0010 C003              PUSH    AR3
+0012 C002              PUSH    AR2
+0014 C001              PUSH    AR1
+0016 7BFF              MOV     R3,#0FFH
+0018 7A00        R     MOV     R2,#HIGH ?SC_0
+001A 7900        R     MOV     R1,#LOW ?SC_0
+001C 900000      E     MOV     DPTR,#?_sprintf?BYTE+03H
+001F 120000      E     LCALL   ?C?PSTXDATA
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 51  
+
+0022 900000      R     MOV     DPTR,#hexbytevalue
+0025 E0                MOVX    A,@DPTR
+0026 FF                MOV     R7,A
+0027 7E00              MOV     R6,#00H
+0029 900000      E     MOV     DPTR,#?_sprintf?BYTE+06H
+002C EE                MOV     A,R6
+002D F0                MOVX    @DPTR,A
+002E A3                INC     DPTR
+002F EF                MOV     A,R7
+0030 F0                MOVX    @DPTR,A
+0031 D001              POP     AR1
+0033 D002              POP     AR2
+0035 D003              POP     AR3
+0037 120000      E     LCALL   _sprintf
+                                           ; SOURCE LINE # 648
+003A 900000      R     MOV     DPTR,#CharecterValue
+003D E0                MOVX    A,@DPTR
+003E FF                MOV     R7,A
+003F 900000      R     MOV     DPTR,#index
+0042 E0                MOVX    A,@DPTR
+0043 FE                MOV     R6,A
+0044 7400        R     MOV     A,#LOW acuarttxbuffer
+0046 2E                ADD     A,R6
+0047 F582              MOV     DPL,A
+0049 E4                CLR     A
+004A 3400        R     ADDC    A,#HIGH acuarttxbuffer
+004C F583              MOV     DPH,A
+004E EF                MOV     A,R7
+004F F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 649
+0050 900000      R     MOV     DPTR,#index
+0053 E0                MOVX    A,@DPTR
+0054 04                INC     A
+0055 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 650
+0056 900000      R     MOV     DPTR,#CharecterValue+01H
+0059 E0                MOVX    A,@DPTR
+005A FF                MOV     R7,A
+005B 900000      R     MOV     DPTR,#index
+005E E0                MOVX    A,@DPTR
+005F FE                MOV     R6,A
+0060 7400        R     MOV     A,#LOW acuarttxbuffer
+0062 2E                ADD     A,R6
+0063 F582              MOV     DPL,A
+0065 E4                CLR     A
+0066 3400        R     ADDC    A,#HIGH acuarttxbuffer
+0068 F583              MOV     DPH,A
+006A EF                MOV     A,R7
+006B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 652
+006C 22                RET     
+             ; FUNCTION _ASCII_Conversion (END)
+
+             ; FUNCTION _UART_TxOperation (BEGIN)
+                                           ; SOURCE LINE # 670
+0000 900000      R     MOV     DPTR,#arraydata
+0003 120000      E     LCALL   ?C?PSTXDATA
+0006 900000      R     MOV     DPTR,#size
+0009 EC                MOV     A,R4
+000A F0                MOVX    @DPTR,A
+000B A3                INC     DPTR
+000C ED                MOV     A,R5
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 52  
+
+000D F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 672
+000E 900000      R     MOV     DPTR,#loopcounter
+0011 E4                CLR     A
+0012 F0                MOVX    @DPTR,A
+0013 A3                INC     DPTR
+0014 E4                CLR     A
+0015 F0                MOVX    @DPTR,A
+0016         ?C0095:
+                                           ; SOURCE LINE # 674
+0016 900000      R     MOV     DPTR,#arraydata
+0019 120000      E     LCALL   ?C?PLDXDATA
+001C 900000      R     MOV     DPTR,#loopcounter
+001F E0                MOVX    A,@DPTR
+0020 FE                MOV     R6,A
+0021 A3                INC     DPTR
+0022 E0                MOVX    A,@DPTR
+0023 FF                MOV     R7,A
+0024 E9                MOV     A,R1
+0025 2F                ADD     A,R7
+0026 F9                MOV     R1,A
+0027 EA                MOV     A,R2
+0028 3E                ADDC    A,R6
+0029 FA                MOV     R2,A
+002A 120000      E     LCALL   ?C?CLDPTR
+002D FF                MOV     R7,A
+002E EF                MOV     A,R7
+002F 6004              JZ      ?C0097
+0031 7F01              MOV     R7,#01H
+0033 8002              SJMP    ?C0098
+0035         ?C0097:
+0035 7F00              MOV     R7,#00H
+0037         ?C0098:
+0037 900000      R     MOV     DPTR,#size
+003A E0                MOVX    A,@DPTR
+003B FC                MOV     R4,A
+003C A3                INC     DPTR
+003D E0                MOVX    A,@DPTR
+003E FD                MOV     R5,A
+003F 900000      R     MOV     DPTR,#loopcounter
+0042 E0                MOVX    A,@DPTR
+0043 FA                MOV     R2,A
+0044 A3                INC     DPTR
+0045 E0                MOVX    A,@DPTR
+0046 FB                MOV     R3,A
+0047 C3                CLR     C
+0048 EB                MOV     A,R3
+0049 9D                SUBB    A,R5
+004A EA                MOV     A,R2
+004B 9C                SUBB    A,R4
+004C 5004              JNC     ?C0099
+004E 7E01              MOV     R6,#01H
+0050 8002              SJMP    ?C0100
+0052         ?C0099:
+0052 7E00              MOV     R6,#00H
+0054         ?C0100:
+0054 EE                MOV     A,R6
+0055 5F                ANL     A,R7
+0056 FF                MOV     R7,A
+0057 EF                MOV     A,R7
+0058 6030              JZ      ?C0096
+                                           ; SOURCE LINE # 676
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 53  
+
+005A 900000      R     MOV     DPTR,#arraydata
+005D 120000      E     LCALL   ?C?PLDXDATA
+0060 900000      R     MOV     DPTR,#loopcounter
+0063 E0                MOVX    A,@DPTR
+0064 FE                MOV     R6,A
+0065 A3                INC     DPTR
+0066 E0                MOVX    A,@DPTR
+0067 FF                MOV     R7,A
+0068 E9                MOV     A,R1
+0069 2F                ADD     A,R7
+006A F9                MOV     R1,A
+006B EA                MOV     A,R2
+006C 3E                ADDC    A,R6
+006D FA                MOV     R2,A
+006E 120000      E     LCALL   ?C?CLDPTR
+0071 FF                MOV     R7,A
+0072 120000      E     LCALL   _UART_PutChar
+                                           ; SOURCE LINE # 677
+0075 900000      R     MOV     DPTR,#loopcounter
+0078 E4                CLR     A
+0079 75F001            MOV     B,#01H
+007C 120000      E     LCALL   ?C?IILDX
+007F         ?C0101:
+                                           ; SOURCE LINE # 678
+007F 120000      E     LCALL   UART_ReadTxStatus
+0082 EF                MOV     A,R7
+0083 20E090            JB      ACC.0,?C0095
+0086 80F7              SJMP    ?C0101
+0088         ?C0102:
+                                           ; SOURCE LINE # 679
+0088 808C              SJMP    ?C0095
+008A         ?C0096:
+                                           ; SOURCE LINE # 681
+008A 120000      E     LCALL   UART_ClearTxBuffer
+                                           ; SOURCE LINE # 684
+008D 22                RET     
+             ; FUNCTION _UART_TxOperation (END)
+
+             ; FUNCTION _UART_RxOperation (BEGIN)
+                                           ; SOURCE LINE # 703
+0000 900000      R     MOV     DPTR,#size
+0003 EE                MOV     A,R6
+0004 F0                MOVX    @DPTR,A
+0005 A3                INC     DPTR
+0006 EF                MOV     A,R7
+0007 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 705
+0008 900000      R     MOV     DPTR,#size
+000B E0                MOVX    A,@DPTR
+000C FE                MOV     R6,A
+000D A3                INC     DPTR
+000E E0                MOVX    A,@DPTR
+000F FF                MOV     R7,A
+0010 900000      R     MOV     DPTR,#Startindex
+0013 E0                MOVX    A,@DPTR
+0014 FE                MOV     R6,A
+0015 EF                MOV     A,R7
+0016 2E                ADD     A,R6
+0017 FF                MOV     R7,A
+0018 900000      R     MOV     DPTR,#Bytecount
+001B EF                MOV     A,R7
+001C F0                MOVX    @DPTR,A
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 54  
+
+                                           ; SOURCE LINE # 706
+001D 900000      R     MOV     DPTR,#Startindex
+0020 E0                MOVX    A,@DPTR
+0021 FF                MOV     R7,A
+0022 900000      R     MOV     DPTR,#LoopCounterSerial
+0025 EF                MOV     A,R7
+0026 F0                MOVX    @DPTR,A
+0027         ?C0104:
+0027 900000      R     MOV     DPTR,#Bytecount
+002A E0                MOVX    A,@DPTR
+002B FF                MOV     R7,A
+002C 900000      R     MOV     DPTR,#LoopCounterSerial
+002F E0                MOVX    A,@DPTR
+0030 FE                MOV     R6,A
+0031 EE                MOV     A,R6
+0032 C3                CLR     C
+0033 9F                SUBB    A,R7
+0034 501C              JNC     ?C0105
+                                           ; SOURCE LINE # 708
+0036 120000      E     LCALL   UART_ReadRxData
+0039 900000      R     MOV     DPTR,#LoopCounterSerial
+003C E0                MOVX    A,@DPTR
+003D FE                MOV     R6,A
+003E 7400        R     MOV     A,#LOW acuartrxbuffer
+0040 2E                ADD     A,R6
+0041 F582              MOV     DPL,A
+0043 E4                CLR     A
+0044 3400        R     ADDC    A,#HIGH acuartrxbuffer
+0046 F583              MOV     DPH,A
+0048 EF                MOV     A,R7
+0049 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 710
+004A 900000      R     MOV     DPTR,#LoopCounterSerial
+004D E0                MOVX    A,@DPTR
+004E 04                INC     A
+004F F0                MOVX    @DPTR,A
+0050 80D5              SJMP    ?C0104
+0052         ?C0105:
+                                           ; SOURCE LINE # 711
+0052 900000      R     MOV     DPTR,#Bytecount
+0055 E0                MOVX    A,@DPTR
+0056 FF                MOV     R7,A
+0057 900000      R     MOV     DPTR,#Startindex
+005A EF                MOV     A,R7
+005B F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 712
+005C 900000      R     MOV     DPTR,#Startindex
+005F E0                MOVX    A,@DPTR
+0060 FF                MOV     R7,A
+0061 900000      R     MOV     DPTR,#Bytecount
+0064 E0                MOVX    A,@DPTR
+0065 FD                MOV     R5,A
+0066 120000      R     LCALL   _Uint8_to_Uint16Conversion
+                                           ; SOURCE LINE # 714
+0069 22                RET     
+             ; FUNCTION _UART_RxOperation (END)
+
+             ; FUNCTION _CalculateCRC16 (BEGIN)
+                                           ; SOURCE LINE # 725
+0000 900000      R     MOV     DPTR,#MsgStartAddr
+0003 120000      E     LCALL   ?C?PSTXDATA
+0006 900000      R     MOV     DPTR,#MsgLength
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 55  
+
+0009 ED                MOV     A,R5
+000A F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 726
+000B 900000      R     MOV     DPTR,#ui16Response
+000E E4                CLR     A
+000F F0                MOVX    @DPTR,A
+0010 A3                INC     DPTR
+0011 E4                CLR     A
+0012 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 729
+0013 900000      R     MOV     DPTR,#CRCtmpHi
+0016 74FF              MOV     A,#0FFH
+0018 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 730
+0019 900000      R     MOV     DPTR,#CRCtmpLo
+001C 74FF              MOV     A,#0FFH
+001E F0                MOVX    @DPTR,A
+001F         ?C0108:
+                                           ; SOURCE LINE # 732
+001F 900000      R     MOV     DPTR,#MsgLength
+0022 E0                MOVX    A,@DPTR
+0023 FF                MOV     R7,A
+0024 14                DEC     A
+0025 F0                MOVX    @DPTR,A
+0026 EF                MOV     A,R7
+0027 6051              JZ      ?C0109
+                                           ; SOURCE LINE # 733
+                                           ; SOURCE LINE # 734
+0029 900000      R     MOV     DPTR,#MsgStartAddr
+002C E4                CLR     A
+002D 75F001            MOV     B,#01H
+0030 120000      E     LCALL   ?C?PLDIXDATA
+0033 120000      E     LCALL   ?C?CLDPTR
+0036 FF                MOV     R7,A
+0037 900000      R     MOV     DPTR,#CRCtmpLo
+003A E0                MOVX    A,@DPTR
+003B FE                MOV     R6,A
+003C EE                MOV     A,R6
+003D 6F                XRL     A,R7
+003E FF                MOV     R7,A
+003F 900000      R     MOV     DPTR,#index
+0042 EF                MOV     A,R7
+0043 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 735
+0044 900000      R     MOV     DPTR,#index
+0047 E0                MOVX    A,@DPTR
+0048 FF                MOV     R7,A
+0049 7400        R     MOV     A,#LOW TabCRCHi
+004B 2F                ADD     A,R7
+004C F582              MOV     DPL,A
+004E E4                CLR     A
+004F 3400        R     ADDC    A,#HIGH TabCRCHi
+0051 F583              MOV     DPH,A
+0053 E0                MOVX    A,@DPTR
+0054 FF                MOV     R7,A
+0055 900000      R     MOV     DPTR,#CRCtmpHi
+0058 E0                MOVX    A,@DPTR
+0059 FE                MOV     R6,A
+005A EF                MOV     A,R7
+005B 6E                XRL     A,R6
+005C FF                MOV     R7,A
+005D 900000      R     MOV     DPTR,#CRCtmpLo
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 56  
+
+0060 EF                MOV     A,R7
+0061 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 736
+0062 900000      R     MOV     DPTR,#index
+0065 E0                MOVX    A,@DPTR
+0066 FF                MOV     R7,A
+0067 7400        R     MOV     A,#LOW TabCRCLo
+0069 2F                ADD     A,R7
+006A F582              MOV     DPL,A
+006C E4                CLR     A
+006D 3400        R     ADDC    A,#HIGH TabCRCLo
+006F F583              MOV     DPH,A
+0071 E0                MOVX    A,@DPTR
+0072 FF                MOV     R7,A
+0073 900000      R     MOV     DPTR,#CRCtmpHi
+0076 EF                MOV     A,R7
+0077 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 737
+0078 80A5              SJMP    ?C0108
+007A         ?C0109:
+                                           ; SOURCE LINE # 739
+007A 900000      R     MOV     DPTR,#CRCtmpLo
+007D E0                MOVX    A,@DPTR
+007E FF                MOV     R7,A
+007F 7E00              MOV     R6,#00H
+0081 900000      R     MOV     DPTR,#ui16Response
+0084 EE                MOV     A,R6
+0085 F0                MOVX    @DPTR,A
+0086 A3                INC     DPTR
+0087 EF                MOV     A,R7
+0088 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 740
+0089 900000      R     MOV     DPTR,#ui16Response
+008C E0                MOVX    A,@DPTR
+008D FE                MOV     R6,A
+008E A3                INC     DPTR
+008F E0                MOVX    A,@DPTR
+0090 FF                MOV     R7,A
+0091 EF                MOV     A,R7
+0092 7F00              MOV     R7,#00H
+0094 FE                MOV     R6,A
+0095 900000      R     MOV     DPTR,#ui16Response
+0098 EE                MOV     A,R6
+0099 F0                MOVX    @DPTR,A
+009A A3                INC     DPTR
+009B EF                MOV     A,R7
+009C F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 741
+009D 900000      R     MOV     DPTR,#CRCtmpHi
+00A0 E0                MOVX    A,@DPTR
+00A1 FF                MOV     R7,A
+00A2 7E00              MOV     R6,#00H
+00A4 900000      R     MOV     DPTR,#ui16Response
+00A7 E0                MOVX    A,@DPTR
+00A8 FC                MOV     R4,A
+00A9 A3                INC     DPTR
+00AA E0                MOVX    A,@DPTR
+00AB FD                MOV     R5,A
+00AC EE                MOV     A,R6
+00AD 4C                ORL     A,R4
+00AE FE                MOV     R6,A
+00AF EF                MOV     A,R7
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 57  
+
+00B0 4D                ORL     A,R5
+00B1 FF                MOV     R7,A
+00B2 900000      R     MOV     DPTR,#ui16Response
+00B5 EE                MOV     A,R6
+00B6 F0                MOVX    @DPTR,A
+00B7 A3                INC     DPTR
+00B8 EF                MOV     A,R7
+00B9 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 742
+00BA 900000      R     MOV     DPTR,#CRCtmpHi
+00BD E0                MOVX    A,@DPTR
+00BE FF                MOV     R7,A
+00BF 900000      R     MOV     DPTR,#CRC+01H
+00C2 EF                MOV     A,R7
+00C3 F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 743
+00C4 900000      R     MOV     DPTR,#CRCtmpLo
+00C7 E0                MOVX    A,@DPTR
+00C8 FF                MOV     R7,A
+00C9 900000      R     MOV     DPTR,#CRC
+00CC EF                MOV     A,R7
+00CD F0                MOVX    @DPTR,A
+                                           ; SOURCE LINE # 745
+00CE 900000      R     MOV     DPTR,#ui16Response
+00D1 E0                MOVX    A,@DPTR
+00D2 FE                MOV     R6,A
+00D3 A3                INC     DPTR
+00D4 E0                MOVX    A,@DPTR
+00D5 FF                MOV     R7,A
+                                           ; SOURCE LINE # 746
+00D6         ?C0110:
+00D6 22                RET     
+             ; FUNCTION _CalculateCRC16 (END)
+
+             ; FUNCTION Check_For_Proper_Response (BEGIN)
+                                           ; SOURCE LINE # 765
+                                           ; SOURCE LINE # 766
+0000 120000      E     LCALL   UART_GetRxBufferSize
+0003 EF                MOV     A,R7
+0004 600D              JZ      ?C0113
+                                           ; SOURCE LINE # 767
+0006 900000      E     MOV     DPTR,#UART_rxBuffer
+0009 E0                MOVX    A,@DPTR
+000A FF                MOV     R7,A
+000B EF                MOV     A,R7
+000C 6424              XRL     A,#024H
+000E 6003              JZ      ?C0113
+                                           ; SOURCE LINE # 768
+0010 120000      E     LCALL   UART_ClearRxBuffer
+                                           ; SOURCE LINE # 769
+                                           ; SOURCE LINE # 770
+                                           ; SOURCE LINE # 771
+0013         ?C0113:
+0013 22                RET     
+             ; FUNCTION Check_For_Proper_Response (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   3649    ----
+   CONSTANT SIZE    =      7    ----
+   XDATA SIZE       =   1126      71
+C51 COMPILER V9.51   SERIALCOMMUNICATION                                                   06/10/2019 17:53:03 PAGE 58  
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

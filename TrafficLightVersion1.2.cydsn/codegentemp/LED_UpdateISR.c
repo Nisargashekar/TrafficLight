@@ -28,14 +28,7 @@
 ********************************************************************************/
 /* `#START LED_UpdateISR_intc` */
 //extern uint8 TimeInState;
-extern uint8 Ftimer;
-extern uint8 Rtimer;
-extern uint8 Dtimer;
-extern uint8 Ltimer;
-extern uint8 FtimerFlag;
-extern uint8 RtimerFlag;
-extern uint8 DtimerFlag;
-extern uint8 LtimerFlag;
+extern uint8 OneSecondFlag;
 //void LCD_Print();
 /* `#END` */
 
@@ -165,10 +158,8 @@ CY_ISR(LED_UpdateISR_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START LED_UpdateISR_Interrupt` */
-    --Ftimer;
-    --Rtimer;
-    --Dtimer;
-    --Ltimer;
+    OneSecondFlag = 1;
+    
 //    if(FtimerFlag == 1){
 //        ++Ftimer;
 //    }else if(FtimerFlag == 2){

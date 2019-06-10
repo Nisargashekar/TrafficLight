@@ -1,4 +1,4 @@
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 1   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 1   
 
 
 C51 COMPILER V9.51, COMPILATION OF MODULE LEFT_AMBER_LED
@@ -62,7 +62,7 @@ line level    source
   50          * \funcusage
   51          *  \snippet Left_Amber_LED_SUT.c usage_Left_Amber_LED_Write
   52          *******************************************************************************/
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 2   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 2   
 
   53          void Left_Amber_LED_Write(uint8 value) 
   54          {
@@ -126,7 +126,7 @@ line level    source
  112   1      }
  113          
  114          
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 3   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 3   
 
  115          /*******************************************************************************
  116          * Function Name: Left_Amber_LED_ReadDataReg
@@ -190,7 +190,7 @@ line level    source
                   * \sideeffect
                   *  It is recommended that the interrupt be disabled before calling this 
                   *  function to avoid unintended interrupt requests. Note that the interrupt
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 4   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 4   
 
                   *  type is port wide, and therefore will trigger for any enabled pin on the 
                   *  port.
@@ -237,7 +237,7 @@ line level    source
  219          
  220          
  221          /* [] END OF FILE */
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 5   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 5   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -301,7 +301,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 000E 905007            MOV     DPTR,#05007H
 0011 E0                MOVX    A,@DPTR
 0012 FE                MOV     R6,A
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 6   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 6   
 
 0013 EE                MOV     A,R6
 0014 54F1              ANL     A,#0F1H
@@ -365,7 +365,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0015 FF                MOV     R7,A
                                            ; SOURCE LINE # 140
 0016         ?C0004:
-C51 COMPILER V9.51   LEFT_AMBER_LED                                                        04/25/2019 18:13:17 PAGE 7   
+C51 COMPILER V9.51   LEFT_AMBER_LED                                                        06/03/2019 18:09:26 PAGE 7   
 
 0016 22                RET     
              ; FUNCTION Left_Amber_LED_ReadDataReg (END)

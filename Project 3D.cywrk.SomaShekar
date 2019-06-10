@@ -13,10 +13,11 @@
 <v>Output</v>
 </TreeKeys>
 <TreeStates>
-<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Project 3D">
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\UART_IntClock">
 <ExpandedNodeIds>
 <v>Project 3D</v>
 <v>Project 3D\Exercise\TopDesign</v>
+<v>Project 3D\Exercise\Exercise.cydwr</v>
 <v>Project 3D\Exercise\Exercise.cydwr\Pins</v>
 <v>Project 3D\Exercise\Exercise.cydwr\Analog</v>
 <v>Project 3D\Exercise\Exercise.cydwr\Clocks</v>
@@ -32,7 +33,6 @@
 <v>Project 3D\Exercise\Source Files\main.c</v>
 <v>Project 3D\Exercise\Generated_Source</v>
 <v>Project 3D\Exercise\Generated_Source\PSoC3</v>
-<v>Project 3D\Exercise\Generated_Source\PSoC3\LED_UpdateISR</v>
 <v>Project 3D\TrafficLight1\TopDesign</v>
 <v>Project 3D\TrafficLight1\TrafficLight1.cydwr</v>
 <v>Project 3D\TrafficLight1\TrafficLight1.cydwr\Pins</v>
@@ -50,7 +50,6 @@
 <v>Project 3D\TrafficLight1\Source Files\main.c</v>
 <v>Project 3D\TrafficLight1\Generated_Source</v>
 <v>Project 3D\TrafficLight1\Generated_Source\PSoC3</v>
-<v>Project 3D\TrafficLight1\Generated_Source\PSoC3\LED_UpdateISR</v>
 <v>Project 3D\TrafficLightVersion1.2</v>
 <v>Project 3D\TrafficLightVersion1.2\TopDesign</v>
 <v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr</v>
@@ -65,13 +64,12 @@
 <v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\EEPROM</v>
 <v>Project 3D\TrafficLightVersion1.2\Header Files</v>
 <v>Project 3D\TrafficLightVersion1.2\Header Files\cyapicallbacks.h</v>
+<v>Project 3D\TrafficLightVersion1.2\Header Files\SerialCommunication.h</v>
 <v>Project 3D\TrafficLightVersion1.2\Source Files</v>
 <v>Project 3D\TrafficLightVersion1.2\Source Files\main.c</v>
+<v>Project 3D\TrafficLightVersion1.2\Source Files\SerialCommunication.c</v>
 <v>Project 3D\TrafficLightVersion1.2\Generated_Source</v>
 <v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LED_UpdateISR</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LED_UpdateTimer</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\SW_ISR1</v>
 <v>Project 3D\TrafficLightwith Struc\TopDesign</v>
 <v>Project 3D\TrafficLightwith Struc\TrafficLightwith Struc.cydwr</v>
 <v>Project 3D\TrafficLightwith Struc\TrafficLightwith Struc.cydwr\Pins</v>
@@ -90,7 +88,6 @@
 <v>Project 3D\TrafficLightwith Struc\Source Files\main.c</v>
 <v>Project 3D\TrafficLightwith Struc\Generated_Source</v>
 <v>Project 3D\TrafficLightwith Struc\Generated_Source\PSoC3</v>
-<v>Project 3D\TrafficLightwith Struc\Generated_Source\PSoC3\LED_UpdateISR</v>
 <v>Project 3D\Traficlight\TopDesign</v>
 <v>Project 3D\Traficlight\Traficlight.cydwr</v>
 <v>Project 3D\Traficlight\Traficlight.cydwr\Pins</v>
@@ -108,39 +105,38 @@
 <v>Project 3D\Traficlight\Source Files\main.c</v>
 <v>Project 3D\Traficlight\Generated_Source</v>
 <v>Project 3D\Traficlight\Generated_Source\PSoC3</v>
-<v>Project 3D\Traficlight\Generated_Source\PSoC3\LED_UpdateISR</v>
 </ExpandedNodeIds>
 <VisibleNodeIds>
-<v>Project 3D</v>
-<v>Project 3D\Exercise</v>
-<v>Project 3D\TrafficLight1</v>
-<v>Project 3D\TrafficLightVersion1.2</v>
-<v>Project 3D\TrafficLightVersion1.2\TopDesign</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Pins</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Analog</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Clocks</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Interrupts</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\DMA</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\System</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Directives</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\Flash Security</v>
-<v>Project 3D\TrafficLightVersion1.2\TrafficLightVersion1.2.cydwr\EEPROM</v>
-<v>Project 3D\TrafficLightVersion1.2\Header Files</v>
-<v>Project 3D\TrafficLightVersion1.2\Header Files\cyapicallbacks.h</v>
-<v>Project 3D\TrafficLightVersion1.2\Source Files</v>
-<v>Project 3D\TrafficLightVersion1.2\Source Files\main.c</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\AfterHours</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Amber_LED</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cy_boot</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Em_EEPROM_Dynamic</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Front_Amber_LED</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Front_Green_LED</v>
-<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Front_Red_LED</v>
 <v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Green_LED</v>
 <v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LCD</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LCD_LCDPort</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LED_UpdateISR</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\LED_UpdateTimer</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Left_Amber_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Left_Green_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Left_Red_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\POT</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Red_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Right_Amber_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Right_Green_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Right_Red_LED</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\Setting_mode</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\SW_ISR1</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\SW_ISR2</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\timer_clock</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\timer_clock_1</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\timer_clock_2</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\UART</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\UART_IntClock</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cycodeshareexport.ld</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cycodeshareimport.ld</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cycodeshareimport.scat</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cydevice.h</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cydevice_trm.h</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cydevicekeil.inc</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cydevicekeil_trm.inc</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cydisabledsheets.h</v>
+<v>Project 3D\TrafficLightVersion1.2\Generated_Source\PSoC3\cyfitter.h</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 <CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
@@ -260,6 +256,13 @@
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_AMux.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_Ext_CP_Clk.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_INT.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_IRQ.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_PM.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\ADC_theACLK.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\AfterHours.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Amber_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\cy_em_eeprom.lst</v>
@@ -272,6 +275,7 @@
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\cyPm.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\CySpc.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\cyutils.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\EEPROM.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Front_Amber_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Front_Green_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Front_Red_LED.lst</v>
@@ -287,13 +291,23 @@
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Left_Green_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Left_Red_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\main.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\POT.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Red_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Right_Amber_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Right_Green_LED.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Right_Red_LED.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\SerialCommunication.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\Setting_mode.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\SW_ISR1.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\SW_ISR2.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\timer_clock.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\timer_clock_1.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\timer_clock_2.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\UART.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\UART_BOOT.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\UART_INT.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\UART_IntClock.lst</v>
+<v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\Listing Files\UART_PM.lst</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\TrafficLightVersion1.2.elf</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\TrafficLightVersion1.2.hex</v>
 <v>Project 3D\TrafficLightVersion1.2\DP8051\DP8051_Keil_951\Debug\TrafficLightVersion1.2.map</v>
@@ -440,15 +454,20 @@
 <v>Project 3D\TrafficLightVersion1.2\CY8C38 Family Datasheet</v>
 <v>Project 3D\TrafficLightVersion1.2\System Reference Guides</v>
 <v>Project 3D\TrafficLightVersion1.2\System Reference Guides\cy_boot_v5_80</v>
+<v>Project 3D\TrafficLightVersion1.2\ADC_DelSig_v3_30.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\CharLCD_v2_20.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_clock_v2_20</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_clock_v2_20\cy_clock_v2_20.pdf</v>
+<v>Project 3D\TrafficLightVersion1.2\cy_constant_v1_0.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_isr_v1_70</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_isr_v1_70\cy_isr_v1_70.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_pins_v2_20</v>
 <v>Project 3D\TrafficLightVersion1.2\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
-<v>Project 3D\TrafficLightVersion1.2\Debouncer_v1_0.pdf</v>
+<v>Project 3D\TrafficLightVersion1.2\Debouncer_v1_0</v>
+<v>Project 3D\TrafficLightVersion1.2\Debouncer_v1_0\Debouncer_v1_0.pdf</v>
+<v>Project 3D\TrafficLightVersion1.2\EEPROM_v3_0.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\Timer_v2_80.pdf</v>
+<v>Project 3D\TrafficLightVersion1.2\UART_v2_50.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\ZeroTerminal.pdf</v>
 <v>Project 3D\TrafficLightwith Struc</v>
 <v>Project 3D\TrafficLightwith Struc\PSoC 3 Architecture TRM</v>
@@ -503,8 +522,8 @@
 <v>Project 3D\TrafficLightVersion1.2\CY8C38 Family Datasheet</v>
 <v>Project 3D\TrafficLightVersion1.2\System Reference Guides</v>
 <v>Project 3D\TrafficLightVersion1.2\System Reference Guides\cy_boot_v5_80</v>
+<v>Project 3D\TrafficLightVersion1.2\ADC_DelSig_v3_30.pdf</v>
 <v>Project 3D\TrafficLightVersion1.2\CharLCD_v2_20.pdf</v>
-<v>Project 3D\TrafficLightVersion1.2\cy_clock_v2_20</v>
 </VisibleNodeIds>
 </CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
 </TreeStatesV2>
@@ -519,11 +538,11 @@
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
 <OpenDocs>
-<name v=".\TrafficLightVersion1.2.cydsn\TrafficLightVersion1.2.cydwr" />
-<name v=".\TrafficLightVersion1.2.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\TrafficLightVersion1.2.cydsn\SerialCommunication.c" />
+<name v=".\TrafficLightVersion1.2.cydsn\SerialCommunication.h" />
 <name v=".\TrafficLightVersion1.2.cydsn\main.c" />
-<name v=".\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\LED_UpdateISR.c" />
-<name v=".\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\SW_ISR1.c" />
+<name v=".\TrafficLightVersion1.2.cydsn\TopDesign\TopDesign.cysch" />
+<name v=".\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\EEPROM.c" />
 </OpenDocs>
 <OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
 
@@ -531,7 +550,7 @@
   Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
   http://www.actiprosoftware.com
 
---><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="881, 604" SelectedTabbedMdiWindow="8fccc801-d94c-4a33-98f0-4835cf06bd44"><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\TrafficLightVersion1.2.cydwr" Guid="3a55d2df-c827-4811-b0b3-713be3c676d0" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\TopDesign\TopDesign.cysch" Guid="c809f6e9-6924-4c06-b04b-b63f11628eae" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\main.c" Guid="8fccc801-d94c-4a33-98f0-4835cf06bd44" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\LED_UpdateISR.c" Guid="705ed27b-a95b-4710-b3d6-0efcb2429853" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\SW_ISR1.c" Guid="9d059c17-488e-4a34-9e24-9161cdaaca20" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="33e44fed-cf65-4fc5-a80e-84ba02944af9" /><ToolWindow Key="Output Window Plugin:7305390e-eabe-4963-b21f-3a0f11b4b1d5:Output Window" Guid="84669efb-ae65-4def-953b-3e79bbbf4f3f" /><ToolWindow Key="CyNoticeWindow:44d3d453-9474-4f2b-b928-4356f496bef0:Notice Window" Guid="3b3c826a-399e-48d3-b224-7e28bb90cf7d" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="881, 604" SelectedTabbedMdiWindow="9fbcec7e-bd62-4675-95b7-2703dcae1cc4"><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\SerialCommunication.c" Guid="9fbcec7e-bd62-4675-95b7-2703dcae1cc4" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\SerialCommunication.h" Guid="522b7e6b-4450-42a2-beb5-9dc8e2c103bb" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\main.c" Guid="754d3afc-e16f-4a7f-8b11-556717e80985" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\TopDesign\TopDesign.cysch" Guid="57522e4e-233e-40a2-a133-bd8bf46514c2" /><DocumentWindow Key="D:\nisarga 2\PSoC Manual Projects\Project 3\Project 3D\TrafficLightVersion1.2.cydsn\Generated_Source\PSoC3\EEPROM.c" Guid="7cdc346a-243d-4a1f-915d-a359c7cb2bc9" /><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="33e44fed-cf65-4fc5-a80e-84ba02944af9" /><ToolWindow Key="CyNoticeWindow:44d3d453-9474-4f2b-b928-4356f496bef0:Notice Window" Guid="3b3c826a-399e-48d3-b224-7e28bb90cf7d" /><ToolWindow Key="Output Window Plugin:7305390e-eabe-4963-b21f-3a0f11b4b1d5:Output Window" Guid="84669efb-ae65-4def-953b-3e79bbbf4f3f" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
